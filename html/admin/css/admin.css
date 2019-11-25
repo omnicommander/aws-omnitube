@@ -1,0 +1,11 @@
+/* admin css file */
+html{
+    margin: 20px;
+    font-family: sans-serif;
+}
+div{
+    margin: 10px 0;
+}
+input{
+    padding: 4px;
+}

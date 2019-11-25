@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
 // show a little class will ya?
-include('class_lib.php');
+include('lib/class_lib.php');
 
 $customers  = new Customer(); 
 $campaigns  = new Campaign();
@@ -16,11 +16,10 @@ $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['la
 ?>
 
 <div class="adminSession">
-<?php echo $admin->name. " [" . $admin->role . "] Last: ". $admin->lastOn; ?>  <a href="logout.php">Logout</a>
+<?php echo $admin->name. " [" . $admin->role . "] Last: ". $admin->lastOn; ?>  <a href="logout.php">Logout</a> <a href="register/">New Admin</a>
 </div>
 
 <div class="container">
-
 <h3>Dashboard</h3>
 
 <pre>

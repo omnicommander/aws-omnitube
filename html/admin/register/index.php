@@ -9,14 +9,18 @@
         <title>OmniTube Service</title>
         <meta name="description" content="The Service to the OmniTube Clients">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="../css/style.css">
+        <link rel="stylesheet" href="../css/admin.css">
         <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
     </head>
     <body>
         <!--[if lt IE 7]>
-            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
+
+        <a href="logout.php">Logout</a> <a href="register/">New Admin</a>
+        
         <h2>Create Administrator</h2>
+        <div id="notify"></div>
         <form method="POST" action="createadmin.php" >
 
                     <div>
@@ -44,7 +48,7 @@
                     </div>
         </form> 
 
-        <script src="js/index.js" async defer></script>
+        <script src="../js/admin.js" async defer></script>
 
     </body>
 </html>

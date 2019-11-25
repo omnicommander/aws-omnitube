@@ -4,15 +4,13 @@ error_reporting(E_ALL);
 
 function addAdmin( $adminName, $email, $pass, $role ){
     
-    global $mysqli;
-    
+    global $mysqli; 
     $encoded    = crypt($pass, '$2a$07$YourSaltIsA22ChrString$');
     $sql        = "INSERT IGNORE INTO Admin ( `adminName`, `role`, `email`, `pass` ) VALUES ('$adminName',$role,'$email','$encoded')";
 
     if ($mysqli->query($sql) === TRUE) {
-        
-        //successful insert of new record
-        header('location:/admin/index.php?id='. mysqli_insert_id($mysqli) );
+               
+        header('location:/admin/register/index.php?id='. mysqli_insert_id($mysqli) );
 
     } else {
        return "Error: " . $sql . "<br>" . $mysqli->error;
