@@ -32,13 +32,17 @@ function AdminLogin($email, $pass){
     
     // Verify user password and set $_SESSION
     if ( password_verify( $pass, $user->pass ) ) {
-        $_SESSION['admin_id']  = $user->id;
-        $_SESSION['adminName'] = $user->adminName;
-        $_SESSION['role']      = $user->role;
+        $_SESSION['admin_id']       = $user->id;
+        $_SESSION['adminName']      = $user->adminName;
+        $_SESSION['role']           = $user->role;
         $_SESSION['last_logged']    = $user->last_logged;
         
         header('location:/admin/dashboard.php');
-    }    
+    }else{
+        header('location:/admin/index.php?login');
+    }
+    
+    
 
 }
 

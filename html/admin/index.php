@@ -5,6 +5,7 @@ if ( isset( $_SESSION['adminName'] ) ) {
     // Let them access the "logged in only" pages
    header('location:/admin/dashboard.php')  ;
 } 
+
 ?>
 
 <!DOCTYPE html>
@@ -22,10 +23,12 @@ if ( isset( $_SESSION['adminName'] ) ) {
         <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
     </head>
     <body>
+    <nav><a href=/>Home</a></nav>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         <h2>Administration login</h2>
+        <div id="notify"></div>
         <form method="POST" action="login.php" >
                     <div>
                         <label for="email">Email address</label>
@@ -40,7 +43,7 @@ if ( isset( $_SESSION['adminName'] ) ) {
                     </div>
         </form> 
 
-        <script src="js/index.js" async defer></script>
+        <script src="js/admin.js" async defer></script>
 
     </body>
 </html>

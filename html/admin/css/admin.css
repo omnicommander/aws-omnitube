@@ -1,11 +1,41 @@
 /* admin css file */
-html{
-    margin: 20px;
-    font-family: sans-serif;
+html {
+  margin: 20px;
+  font-family: sans-serif;
 }
-div{
-    margin: 10px 0;
+
+div {
+  margin: 10px 0;
 }
-input{
-    padding: 4px;
+
+input {
+  padding: 4px;
 }
+
+.adminSession {
+  padding: 10px;
+  background-color: #52019d;
+  color: white;
+}
+
+.adminSession a {
+  color: white;
+  text-decoration: none;
+}
+
+.adminSession a:hover {
+  color: yellow;
+  text-decoration: underline;
+}
+
+.adminSession ul.menu {
+  padding: 0;
+  margin: 20px 0;
+}
+
+.adminSession ul.menu li {
+  display: inline;
+  list-style-type: none;
+  margin-right: 20px;
+}
+/*# sourceMappingURL=admin.css.map */

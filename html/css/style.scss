@@ -1,0 +1,25 @@
+html{
+    margin: 20px;
+    font-family: sans-serif;
+}
+div{
+    margin: 10px 0;
+}
+input{
+    padding: 4px;
+}
+
+nav{
+    display: flex;
+    padding: 20px;
+    background-color: #52019d;
+
+    a{
+        text-decoration: none;
+        color: white;
+    }
+    a:hover{
+        color: yellow;
+        text-decoration: underline;
+    }
+}

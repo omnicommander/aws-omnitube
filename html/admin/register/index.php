@@ -1,3 +1,16 @@
+<?php
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+// No unathorized access allowed
+session_start();
+if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
+include('../lib/class_lib.php');
+$menu = new menu();
+
+?>
+
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -17,8 +30,10 @@
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <a href="logout.php">Logout</a> <a href="register/">New Admin</a>
-        
+        <div class="adminSession">
+        <?php echo $menu->main(); ?>  
+        </div>
+
         <h2>Create Administrator</h2>
         <div id="notify"></div>
         <form method="POST" action="createadmin.php" >

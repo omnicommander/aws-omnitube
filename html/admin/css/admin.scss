@@ -1,0 +1,36 @@
+/* admin css file */
+html{
+    margin: 20px;
+    font-family: sans-serif;
+}
+div{
+    margin: 10px 0;
+}
+input{
+    padding: 4px;
+}
+
+// Admin session header bar
+.adminSession{
+    padding: 10px; 
+    background-color: rgb(82, 1, 157);
+    color: white;
+    
+    a{
+        color:white;
+        text-decoration: none;;
+    }
+    a:hover{
+        color: yellow;
+        text-decoration: underline;
+    }
+    ul.menu{
+        padding:0;
+        margin: 20px 0;
+    }
+    ul.menu li{
+        display: inline;
+        list-style-type: none;
+        margin-right: 20px;
+    }
+}

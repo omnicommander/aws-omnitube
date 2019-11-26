@@ -4,6 +4,10 @@
   if( getUrlParameter('id')){
       $('#notify').html('New admin account created successfully.');
   };
+
+  if(getUrlParameter('login')){
+      $('#notify').html('Bad email or password.');
+  }
   
 
  function getUrlParameter(sParam) {

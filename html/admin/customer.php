@@ -1,13 +1,3 @@
-<?php
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-// No unathorized access allowed
-session_start();
-if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
-?>
-
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -23,40 +13,31 @@ if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
         <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
     </head>
     <body>
-
-<?php
+<?php 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+// No unathorized access allowed
+session_start();
+if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
 // show a little class will ya?
 include('lib/class_lib.php');
+
 $customers  = new Customer(); 
 $campaigns  = new Campaign();
 $videos     = new Video();
 $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
 $menu       = new menu();
-
 ?>
+
 <div class="adminSession">
-    <span class="session"><?php  echo $admin->name. " Last On: ". $admin->lastOn; ?></span>
-    <?php echo $menu->main(); ?>  
+    <?php  echo $admin->name. " Last On: ". $admin->lastOn . $menu->main(); ?>  
 </div>
 
 <div class="container">
-<h3>Dashboard</h3>
+<h3>Customer</h3>
 
+<pre> <?php print_r( $customers->fetchCustomer($_GET['id']) ); ?> </pre>
 
+<h3>Campaigns</h3>
 
-<h4>Customers</h4>
-<!-- <pre> -->
-<?php
-
-foreach($customers->fetchAllCustomers($admin) as $cust){
-    echo '<div class="custLink"><a href="customer.php?id='.$cust->customer_id.'">' .  strtoupper( $cust->customer_name ). "</a></div>";
-       
-
-}
-
-
-// print_r( $customers->fetchCustomerCampaigns('1') );
-
-?>
-<!-- </pre> -->
-</div>
+<pre><?php print_r( $customers->fetchCustomerCampaigns($_GET['id'])); ?> </pre>

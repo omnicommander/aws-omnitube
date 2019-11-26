@@ -1,7 +1,6 @@
 <?php
-require('../functions/db.php');
-require('../functions/admin.php');
-
+require($_SERVER['DOCUMENT_ROOT']. '/functions/db.php');
+require($_SERVER['DOCUMENT_ROOT'] .'/functions/admin.php');
 
 class Admin {
 
@@ -18,16 +17,14 @@ class Admin {
       }
 }
 
-
-
 class Customer {  
     
     var $customers, $customer;
-    
+   
      // all customers, returns as object
     // role based, if ADMIN show all, else only assigned admin_id for logged in $_SESSION
     
-    function customers($admin){
+    function fetchAllCustomers($admin){
         global $mysqli;
         $customers  = array();
         
@@ -47,6 +44,28 @@ class Customer {
         while($row = $result->fetch_object()){ array_push($customers, $row);}
         $this->customers =(object) $customers;
         return $this->customers;
+    }
+    
+    // fetch single customer info, including campaigns, videos
+    function fetchCustomer($id,$data=array()){
+        global $mysqli;
+        if(! $result = $mysqli->query(
+            "select * from Customer C
+            WHERE C.id IN('$id')")) {
+            $this->customer = array('error' => 'no results');
+        }
+        while($row=$result->fetch_object()){array_push($data, $row);}
+        $this->customer = (object) $data;
+        return $this->customer;
+    }
+
+    // fetch campaigns by Customer ID
+    function fetchCustomerCampaigns( $customer_id, $data=array() ){
+        global $mysqli;
+        $result = $mysqli->query("SELECT * from Campaign WHERE customer_id IN($customer_id)");
+        while($row = $result->fetch_object()){array_push($data, $row);}
+        $this->campaigns=$data;
+        return (object) $this->campaigns;
     }
     
 } // Customer class
@@ -70,7 +89,7 @@ class Campaign{
         }
         // successful query
         while($row = $result->fetch_object()){ array_push($data, $row);}
-        $this->campaigns =(object) $data;
+        $this->campaigns = $data;
         return $this->campaigns;
     }
     
@@ -79,7 +98,8 @@ class Campaign{
 // Video Class
 class Video{
     var $videos, $video;
-    function videos($campaignId){
+    
+    function fetchCampaignVideos($campaignId){
         global $mysqli;
         $data = [];
         $query = "SELECT * from Video where campaign_id='$campaignId'";
@@ -93,4 +113,31 @@ class Video{
         $this->videos =(object) $data;
         return $this->videos;
     }
+}
+
+
+
+
+class menu{
+    
+    var $menu, $link;
+
+    public function __construct () {
+                
+        global $mysqli;
+        $query="Select role from `Roles` where id=". $_SESSION['role'];
+        $result = $mysqli->query($query);
+        $value = mysqli_fetch_object($result);
+        $this->role = $value->role;
+        
+      }
+
+      function main(){
+           
+          
+          $this->menu = "<ul class='menu ".$this->role ."'><li><a href='/'>Home</a></li>";
+          $this->menu .= $this->role == 'Admin' ? "<li><a href='/admin/register'>Register</a></li><li><a href='/admin/logout.php'>Logout</a></li></ul>": "</ul>";
+
+          return $this->menu;
+      }
 }

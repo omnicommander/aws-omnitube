@@ -8,8 +8,4 @@ require('../functions/db.php');
 require('../functions/admin.php');
 
 extract($_POST);
-if($email && $pass) {
-    $login = AdminLogin($email, $pass);
-}else{
-    header('location:/admin');
-}
+if($email && $pass) { AdminLogin($email, $pass);}
