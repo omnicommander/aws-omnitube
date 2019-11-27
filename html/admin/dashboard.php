@@ -36,7 +36,7 @@ $menu       = new menu();
 ?>
 <div class="adminSession">
     <span class="session"><?php  echo $admin->name. " Last On: ". $admin->lastOn; ?></span>
-    <?php echo $menu->main(); ?>  
+    <?php echo $menu->dashboard(); ?>  
 </div>
 
 <div class="container">

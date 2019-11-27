@@ -1,12 +1,14 @@
 // admin.js file
 
-// $(document).ready(function(){
+$(document).ready(function(){
+    $('#notify').hide();
+
   if( getUrlParameter('id')){
-      $('#notify').html('New admin account created successfully.');
+      $('#notify').addClass('success').html('New admin account created successfully.').show();
   };
 
   if(getUrlParameter('login')){
-      $('#notify').html('Bad email or password.');
+      $('#notify').addClass('error').html('Invalid email address OR password').show();
   }
   
 
@@ -25,4 +27,7 @@
     }
 };
 
-// });
+
+
+
+}); // document.ready

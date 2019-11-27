@@ -8,7 +8,7 @@ session_start();
 if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
 include('../lib/class_lib.php');
 $menu = new menu();
-
+$admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +23,7 @@ $menu = new menu();
         <meta name="description" content="The Service to the OmniTube Clients">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../css/admin.css">
+        
         <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
     </head>
     <body>
@@ -30,38 +31,46 @@ $menu = new menu();
         <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="adminSession">
-        <?php echo $menu->main(); ?>  
-        </div>
+    <div class="adminSession">
+        <span class="session"><?php  echo $admin->name. " Last On: ". $admin->lastOn; ?></span>
+        <?php echo $menu->dashboard(); ?>  
+    </div>
 
-        <h2>Create Administrator</h2>
+<div class="container">
+                
+    <div class="form-container">
         <div id="notify"></div>
-        <form method="POST" action="createadmin.php" >
+        <form id="registerForm" method="POST" action="createadmin.php" >
 
-                    <div>
-                        <label for="adminName">Name</label>
-                        <input type="text" name="adminName" id="adminName">
-                    </div>
+            <ul class="flex-outer">
+                <li>
+                    <label for="adminName">Name</label>
+                    <input type="text" name="adminName" id="adminName" required>
+                </li>
 
-                    <div>
-                        <label for="email">Email address</label>
-                        <input type="mail"  placeholder="Email" name="email" id=email>
-                   </div>
-                    <div>
-                        <label for="password">Password</label>
-                        <input type="password" name="pass" id="password">
-                    </div>
-                    <div>
-                        <label for="role">Role</label>
-                        <select name="role" id="role">
-                        <option value="1">Admin</option>
-                        <option value="2">Campaign Manager</option>
-                        </select>
-                    </div>
-                    <div>
-                        <input type="submit" value="GO">
-                    </div>
+                <li>
+                    <label for="email">Email address</label>
+                    <input type="mail"  placeholder="Email" name="email" id=email required>
+                </li>
+                <li>
+                    <label for="password">Password</label>
+                    <input type="password" name="pass" id="password" required>
+                </li>
+                <li>
+                    <label for="role">Role</label>
+                    <select class="select-css" name="role" id="role" >
+                    <option value="1">Admin</option>
+                    <option value="2">Campaign Manager</option>
+                    </select>
+                </li>
+            <li>
+                <button type="submit">REGISTER</button>
+            </li>
+            </ul>
         </form> 
+
+    </div>  <!-- form-container -->
+</div><!-- container -->
 
         <script src="../js/admin.js" async defer></script>
 

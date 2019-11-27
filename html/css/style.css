@@ -1,3 +1,4 @@
+@import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
 html {
   margin: 20px;
   font-family: sans-serif;
@@ -13,10 +14,6 @@ input {
 }
 
 nav {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  padding: 20px;
   background-color: #52019d;
 }
 
@@ -30,8 +27,29 @@ nav a:hover {
   text-decoration: underline;
 }
 
+ul.menu {
+  color: #fff;
+  padding: 20px;
+}
+
+ul.menu li {
+  display: inline;
+  list-style-type: none;
+  margin-right: 20px;
+}
+
+li.admin:before {
+  content: '\f505';
+  /* You should use \ and not /*/
+  font-family: "Font Awesome 5 Free";
+  /* This is the correct font-family*/
+  font-style: normal;
+  font-weight: 600;
+  text-decoration: inherit;
+  margin-right: 4px;
+}
+
 #notify {
-  padding: 10px;
   color: red;
   font-weight: 700;
   text-transform: uppercase;
@@ -41,5 +59,64 @@ nav a:hover {
   margin: 40px;
   border: 1px solid #000;
   padding: 20px;
+}
+
+.form-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.form-container ul.flex-outer {
+  padding: 0;
+}
+
+.form-container .flex-outer li,
+.form-container .flex-inner {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  margin: 20px 0;
+}
+
+.form-container .flex-outer > li > label,
+.form-container .flex-outer li p {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 120px;
+          flex: 1 0 120px;
+  max-width: 220px;
+}
+
+.form-container .flex-outer > li > label + *,
+.form-container .flex-inner {
+  -webkit-box-flex: 1;
+      -ms-flex: 1 0 220px;
+          flex: 1 0 220px;
+}
+
+.form-container .flex-outer li button {
+  margin-left: auto;
+  padding: 8px 16px;
+  border: none;
+  background: #333;
+  color: #f2f2f2;
+  text-transform: uppercase;
+  letter-spacing: .09em;
+  border-radius: 2px;
+}
+
+.form-container .flex-inner li {
+  width: 100px;
+}
+
+.form-container .flex-inner {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 /*# sourceMappingURL=style.css.map */

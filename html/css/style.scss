@@ -1,3 +1,5 @@
+@import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
+
 html{
     margin: 20px;
     font-family: sans-serif;
@@ -11,10 +13,7 @@ input{
 }
 
 nav{
-    display: flex;
-    padding: 20px;
     background-color: #52019d;
-
     a{
         text-decoration: none;
         color: white;
@@ -25,8 +24,29 @@ nav{
     }
 }
 
+// menu styles
+ul.menu {
+    color: #fff;
+    padding:20px;
+    
+}
+ul.menu li{
+    display: inline;
+    list-style-type: none;
+    margin-right: 20px;
+}
+// Home link with icon
+li.admin:before{
+    content: '\f505'; /* You should use \ and not /*/
+    font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
+    font-style: normal;
+    font-weight: 600;
+    text-decoration: inherit;
+    margin-right: 4px;
+    }
+
+
 #notify{
-    padding: 10px;
     color: red;
     font-weight: 700;
     text-transform: uppercase;
@@ -36,4 +56,50 @@ nav{
     margin: 40px;
     border: 1px solid #000;
     padding: 20px;
+}
+
+// FORMS STYLING -----------
+.form-container{
+    display: flex;
+
+    ul.flex-outer{
+        padding:0;
+    }
+
+.flex-outer li,        
+    .flex-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin: 20px 0;
+    }
+
+.flex-outer > li > label,
+    .flex-outer li p {
+    flex: 1 0 120px;
+    max-width: 220px;
+    }
+ 
+.flex-outer > li > label + *,
+    .flex-inner {
+    flex: 1 0 220px;
+    }
+
+    .flex-outer li button {
+        margin-left: auto;
+        padding: 8px 16px;
+        border: none;
+        background: #333;
+        color: #f2f2f2;
+        text-transform: uppercase;
+        letter-spacing: .09em;
+        border-radius: 2px;
+      }
+      .flex-inner li {
+        width: 100px;
+      }
+      .flex-inner {
+        justify-content: space-between;
+      }
+
 }
