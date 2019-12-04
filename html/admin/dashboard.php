@@ -23,7 +23,6 @@ if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
         <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
     </head>
     <body>
-
 <?php
 // show a little class will ya?
 include('lib/class_lib.php');
@@ -39,24 +38,28 @@ $menu       = new menu();
     <?php echo $menu->dashboard(); ?>  
 </div>
 
-<div class="container">
+
+<div class="content">
+
 <h3>Dashboard</h3>
-
-
-
 <h4>Customers</h4>
 <!-- <pre> -->
 <?php
 
 foreach($customers->fetchAllCustomers($admin) as $cust){
     echo '<div class="custLink"><a href="customer.php?id='.$cust->customer_id.'">' .  strtoupper( $cust->customer_name ). "</a></div>";
-       
 
 }
 
 
-// print_r( $customers->fetchCustomerCampaigns('1') );
-
 ?>
-<!-- </pre> -->
+
+
 </div>
+
+<footer class="footer">
+     &copy; Omnicommander <?php echo date('Y'); ?>
+</footer>
+
+</body>
+</html>

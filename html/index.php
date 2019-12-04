@@ -1,5 +1,6 @@
 
 <?php 
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
@@ -13,8 +14,8 @@ session_start();
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>TubeCommander</title>
-        <meta name="description" content="The Service to the OmniTube Clients">
+        <title>TubeCommander by OmniCommander</title>
+        <meta name="description" content="TubeCommander -- A Service for OmniCommander">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/style.css">
         <script src="https://kit.fontawesome.com/fd442e054f.js" crossorigin="anonymous"></script>
@@ -24,17 +25,24 @@ session_start();
 <nav> 
     <ul class="menu">
         <li class='admin'>
-                <a href="admin/">Admin</a>
+                <a href="admin/">Login</a>
         </li>
     </ul>
 </nav>
-    <div class="container">
+<div class="main-container content">
+
     <h2>Welcome To TubeCommander</h2>
-    
-    <p>A project to manage the OmniTube clients and relative campaigns. </p>
 
-    <h3>A "How It Works" is currently being constructed...</h3>
+    <div id="img-container"><img src="img/Raspi-PGB001.png" alt="Raspberry Pi" ></div>
     
+    <h2>The Controller of Everything for OmniTube.</h2>
+    
+    <p>release v0.1a by Scott Fleming</p>
+</div>
 
+<!-- Footer -->
+<footer class="footer">
+     &copy; Omnicommander <?php echo date('Y'); ?>
+</footer>
 </body>
 </html>

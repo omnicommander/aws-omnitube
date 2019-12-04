@@ -10,13 +10,19 @@ function pi_getVideos($clientId, $videos=array() ){
 
     // PSUEDO: Get all videos for the clientId on assigned active campaign.
     
-    $query = "SELECT V.*, Cl.campaign_id, C.customer_name,Ca.campaign_name, A.adminName, A.email adminEmail
-                FROM `Customer` C 
-                JOIN Client Cl on Cl.customer_id=C.id
-                JOIN Campaign Ca on Ca.customer_id=C.id
-                JOIN Video V on V.campaign_id=Ca.campaign_id
-                JOIN `Admin` A on A.id=C.admin
-                WHERE Cl.PI_UID='$clientId' and Ca.status=1";
+    // $query = "SELECT V.*, Cl.campaign_id, C.customer_name, Ca.campaign_name, A.adminName, A.email adminEmail
+    //             FROM `Customer` C 
+    //             JOIN Client Cl on Cl.customer_id=C.id
+    //             JOIN Campaign Ca on Ca.customer_id=C.id
+    //             JOIN Video V on V.campaign_id=Ca.campaign_id
+    //             JOIN `Admin` A on A.id=C.admin
+    //             WHERE Cl.PI_UID='$clientId' and Ca.status=1";
+
+    $query = "SELECT V.* FROM `Client` C 
+                JOIN Campaign CA on CA.campaign_id=C.campaign_id
+                JOIN Video V on V.campaign_id=CA.campaign_id
+                WHERE C.PI_UID='$clientId' AND CA.status=1";
+
         
         // failed query just return false
         if(!$result = $mysqli->query($query)){ return false; }

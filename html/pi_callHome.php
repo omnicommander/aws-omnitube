@@ -10,7 +10,6 @@ require('functions/pi_functions.php');
 // die if no get index
 if(!$_GET['id']){ exit;}else{ $cId = $_GET['id'];}
 
-
 $customer = pi_getVideos($cId);
 
 // output pure, and absolutely wonderful json

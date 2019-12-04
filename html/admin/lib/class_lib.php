@@ -47,7 +47,10 @@ class Customer {
     function fetchCustomer($id,$data=array()){
         global $mysqli;
         if(! $result = $mysqli->query(
-            "select customer_name,customer_contact_email,customer_contact_phone,customer_website_url from Customer C
+            "SELECT customer_name, customer_contact_email, customer_contact_phone, customer_website_url,
+            DATE_FORMAT(date_created,'%m/%d/%Y') AS created ,A.adminName 
+            from Customer C
+            JOIN Admin A on A.id=C.admin
             WHERE C.id IN('$id')")) {
             $this->customer = array('error' => 'no results');
         }
@@ -60,24 +63,28 @@ class Customer {
     function fetchCustomerCampaigns( $customer_id, $data=array() ){
         global $mysqli;
         
-        $result = $mysqli->query("SELECT C.campaign_id,C.campaign_name,C.created,A.adminName,
-                                IF(C.status=1,'Active','Inactive') as status
-                                from Campaign C
-                                JOIN Admin A on A.id=C.admin_id
-                                WHERE C.customer_id IN($customer_id)");
+        $result = $mysqli->query("SELECT C.campaign_id,C.campaign_name, 
+                                  DATE_FORMAT(C.created,'%m/%d/%Y') AS created,A.adminName,
+                                  IF(C.status=1,'Active','Inactive') as status
+                                  FROM Campaign C
+                                   JOIN Admin A on A.id=C.admin_id
+                                   WHERE C.customer_id IN($customer_id)");
 
-        while($row = $result->fetch_object()){array_push($data, $row);}
-        $this->campaigns=$data;
+        while($row = $result->fetch_object()) { array_push($data, $row); }
+
+        $this->campaigns = $data;
         return (object) $this->campaigns;
     }
 
-
     function fetchCustomerCampaignVideos($campaignId, $data=array()){
         global $mysqli;
-        $result = $mysqli->query( "SELECT video_id,video_title,youtube_id,date_created FROM Video WHERE campaign_id IN ('$campaignId')");
-        while($row = $result->fetch_object()) { 
-            array_push($data, $row);
-        }
+
+        $result = $mysqli->query( "SELECT video_id, video_title, youtube_id, 
+                                   DATE_FORMAT(date_created,'%m/%d/%Y') AS date_created 
+                                   FROM Video WHERE campaign_id IN ('$campaignId')");
+
+        while($row = $result->fetch_object()) { array_push($data, $row); }
+        
         $this->videos = $data;
         return (object) $this->videos;
     }
@@ -98,6 +105,7 @@ class Campaign{
         $query = "SELECT C.*, Cl.PI_UID from Campaign C
                   JOIN Client Cl on Cl.campaign_id=C.campaign_id
                   WHERE C.customer_id='$customerId'";
+
         if(!$result = $mysqli->query($query)){
             $this->campaigns = array('error' => 'nodo find');
             return $this->campaigns;
@@ -117,7 +125,8 @@ class Video{
     function fetchCampaignVideos($campaignId){
         global $mysqli;
         $data = [];
-        $query = "SELECT * from Video where campaign_id='$campaignId'";
+        $query = "SELECT * FROM Video 
+                  WHERE campaign_id='$campaignId'";
        
         if(!$result = $mysqli->query($query)){
             $this->videos = array('error' => 'nodo find');
@@ -128,6 +137,48 @@ class Video{
         $this->videos =(object) $data;
         return $this->videos;
     }
+
+    // update a video entry
+    function updateVideo( $post_array ){
+        global $mysqli;
+        extract($post_array);
+        $sql = "Update Video SET video_title='$video_title', youtube_id='$youtube_id' WHERE video_id IN ('$video_id')";
+        if(!$result = $mysqli->query($sql)){
+            $this->update = array('error' => 'update failed.');
+        }
+        $this->update = true;
+        return $this->update;
+    }
+
+    // insert a new video into Video table 
+    function insertVideo( $post_array ){
+        global $mysqli;
+        extract( $post_array );
+        
+        $sql = "INSERT INTO Video (video_title, youtube_id, campaign_id ) VALUES ('$video_title', '$youtube_id', '$campaign_id')";
+
+        if( !$result = $mysqli->query($sql) ){
+            $this->insert_id = array('error' => 'insert failed.');         
+        }
+        $this->insert_id = $mysqli->insert_id;
+        return $this->insert_id;
+
+    }
+
+    // delete a video record
+    function deleteVideo( $post_array ){
+        global $mysqli;
+        extract($post_array);
+
+        $sql = "DELETE FROM Video WHERE video_id IN('$video_id')";
+        if( !$result = $mysqli->query($sql) ){
+            $this->delete = array('error' => 'delete failed.');                     
+        }
+        $this->rows = $mysqli->affected_rows;
+        return $this->rows;
+    }
+
+
 }
 
 

@@ -23,14 +23,15 @@ if ( isset( $_SESSION['adminName'] ) ) {
         <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
     </head>
     <body>
-    <div class="menuContainer"><ul class="menu"><li class="home"><a href="/">Home</a> </li></ul></div>
+
+<div class="menuContainer"><ul class="menu"><li class="home"><a href="/">Home</a> </li></ul></div>
 
 <!--[if lt IE 7]>
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
 
-
-    <header>TubeCommander Administrator Login</header>
+<div class="main-container content">
+    <header>TubeCommander Login</header>
         <div class="form-container">
             <div id="notify"></div>
             <form method="POST" action="login.php" id="adminLoginForm" >
@@ -49,6 +50,14 @@ if ( isset( $_SESSION['adminName'] ) ) {
                 </ul>
             </form> 
         </div>
+</div>  
+
+
+<footer class="footer">
+     &copy; Omnicommander <?php echo date('Y'); ?>
+</footer>
+
      <script src="js/admin.js" async defer></script>
+
     </body>
 </html>
