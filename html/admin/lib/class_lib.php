@@ -7,6 +7,7 @@ class Admin {
     public function __construct ($name, $role ) {
         $this->name = $_SESSION['adminName'];
         $this->lastOn = $_SESSION['last_logged'];
+        $this->admin_id = $_SESSION['admin_id'];
         
         global $mysqli;
         $query="Select role from `Roles` where id=". $_SESSION['role'];
@@ -14,6 +15,10 @@ class Admin {
         $value = mysqli_fetch_object($result);
         $this->role = $value->role;
 
+      }
+
+      function footer(){
+          return '<footer class="footer"> &copy; Omnicommander '. date('Y'). ' v0.1</footer>';
       }
 }
 
@@ -27,10 +32,14 @@ class Customer {
     function fetchAllCustomers($admin){
         global $mysqli;
         $customers  = array();
-        $query      = "SELECT C.id customer_id, C.customer_name, C.customer_website_url,C.customer_contact_phone,C.status, A.adminName FROM `Customer` C 
+        $query      = "SELECT C.id customer_id, C.customer_name, 
+                        DATE_FORMAT(C.date_updated,'%m/%d/%Y') AS customer_date_updated,
+                        C.customer_website_url,C.customer_contact_name,C.customer_contact_email, C.customer_contact_phone, C.status AS customer_status
+                       FROM `Customer` C 
                        JOIN `Admin` A on A.id=C.admin       
                        WHERE C.status = 1 ";
-                       // Limit to assigned managers' customers. 
+
+                       // Limit query to assigned admin only
                        if( $admin->role != 'Admin' ) $query=$query. "AND C.admin= ".$_SESSION['admin_id'];
 
         if(!$result = $mysqli->query($query)){
@@ -48,14 +57,14 @@ class Customer {
         global $mysqli;
         if(! $result = $mysqli->query(
             "SELECT customer_name, customer_contact_email, customer_contact_phone, customer_website_url,
-            DATE_FORMAT(date_created,'%m/%d/%Y') AS created ,A.adminName 
+            DATE_FORMAT(date_updated,'%m/%d/%Y') AS created ,A.adminName 
             from Customer C
             JOIN Admin A on A.id=C.admin
             WHERE C.id IN('$id')")) {
             $this->customer = array('error' => 'no results');
         }
-        while($row=$result->fetch_object()){array_push($data, $row);}
-        $this->customer = (object) $data;
+        while($row = $result->fetch_object()){array_push($data, $row);}
+            $this->customer = (object) $data;
         return $this->customer;
     }
 
@@ -89,6 +98,47 @@ class Customer {
         return (object) $this->videos;
     }
 
+// insert Customer record
+// ==============================
+function insertCustomer( $post_array ){
+    global $mysqli;
+    extract( $post_array );
+
+    $sql = "INSERT INTO Customer (`customer_name`, `customer_contact_name`, `customer_contact_email`,`customer_website_url`, `customer_contact_phone`, `admin`, `status`)
+            VALUES ('$customer_name','$customer_contact_name','$customer_contact_email','$customer_website_url', '$customer_contact_phone','$admin','$status')";
+
+    if(!$result = $mysqli->query($sql)){
+        $this->inserted = array('error' => 'update failed.');
+    }
+    $this->inserted = $mysqli->insert_id;
+        return $this->inserted;
+    
+    }
+
+
+
+    // update Customer record data
+    // ==================================
+    function updateCustomer( $post_array ){
+        global $mysqli;
+    
+        extract($post_array);
+
+            $sql = "Update Customer SET 
+                customer_contact_name   = '$customer_contact_name',
+                customer_contact_email  = '$customer_contact_email',
+                customer_website_url    = '$customer_website_url',
+                customer_contact_phone  = '$customer_contact_phone'
+                WHERE id = '$customer_id'";
+
+
+            if(!$result = $mysqli->query($sql)){
+                $this->update = array('error' => 'update failed.');
+            }
+            $this->update = $mysqli->affected_rows;
+            return $this->update;
+        }
+    
     
 
     
@@ -180,9 +230,6 @@ class Video{
 
 
 }
-
-
-
 
 class menu{
     

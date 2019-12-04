@@ -11,6 +11,7 @@ error_reporting(E_ALL);
 include('lib/class_lib.php');
 
 $videos     = new Video();
+$customer   = new Customer();
 
 // echo json_encode($_POST);
 if($_POST['action'] == 'updateVideo'){
@@ -23,4 +24,12 @@ if($_POST['action'] == 'insertVideo'){
 
 if($_POST['action'] == 'deleteVideo' ){
     echo json_encode( $videos->deleteVideo( $_POST ));
+}
+
+if($_POST['action'] == 'updateCustomer'){
+echo json_encode( $customer->updateCustomer( $_POST ) );
+}
+
+if($_POST['action'] == 'insertCustomer'){
+echo json_encode( $customer->insertCustomer( $_POST ) );
 }

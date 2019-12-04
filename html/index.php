@@ -4,6 +4,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
+include('lib/class_lib.php');
+$site = new Site();
 
 ?>
 <!DOCTYPE html>
@@ -41,8 +43,6 @@ session_start();
 </div>
 
 <!-- Footer -->
-<footer class="footer">
-     &copy; Omnicommander <?php echo date('Y'); ?>
-</footer>
+<?php echo $site->footer; ?>
 </body>
 </html>

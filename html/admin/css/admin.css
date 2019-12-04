@@ -1,4 +1,102 @@
 @import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
+.select-css {
+  display: block;
+  line-height: 1.3;
+  padding: .6em 1.4em .5em .8em;
+  width: 100%;
+  max-width: 100%;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  border: 1px solid #aaa;
+  -webkit-box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+          box-shadow: 0 1px 0 1px rgba(0, 0, 0, 0.04);
+  border-radius: .5em;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"), -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#e5e5e5));
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23007CB2%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E"), linear-gradient(to bottom, #ffffff 0%, #e5e5e5 100%);
+  background-repeat: no-repeat, repeat;
+  background-position: right .7em top 50%, 0 0;
+  background-size: .65em auto, 100%;
+}
+
+.select-css::-ms-expand {
+  display: none;
+}
+
+.select-css:hover {
+  border-color: #888;
+}
+
+.select-css:focus {
+  border-color: #aaa;
+  -webkit-box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+          box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222;
+  outline: none;
+}
+
+.select-css option {
+  font-weight: normal;
+}
+
+header.dashboard {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 28px;
+  color: #52019d;
+}
+
+header.dashboard:before {
+  content: '\f508';
+  /* You should use \ and not /*/
+  font-family: "Font Awesome 5 Free";
+  /* This is the correct font-family*/
+  font-style: normal;
+  font-weight: 600;
+  text-decoration: inherit;
+  margin-right: 10px;
+  font-size: 40px;
+  color: #e8e8e8;
+}
+
+section {
+  display: table;
+  width: 100%;
+}
+
+section .headerRow {
+  background-color: #52019d;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 20px;
+  padding: 4px;
+}
+
+section .row:nth-child(odd) {
+  background: #e6e6e6;
+}
+
+section > * {
+  display: table-row;
+}
+
+section .col {
+  display: table-cell;
+  padding: 10px 4px;
+}
+
 /* admin css file */
 html {
   font-family: sans-serif;
@@ -15,6 +113,7 @@ body {
           flex-direction: column;
   height: 98vh;
   /* Avoid the IE 10-11 `min-height` bug. */
+  margin: 4px;
 }
 
 .content {
@@ -159,7 +258,6 @@ header {
           align-items: center;
   font-size: 28px;
   color: #52019d;
-  margin: 40px 0;
 }
 
 header:before {
@@ -286,6 +384,7 @@ header:before {
   text-transform: uppercase;
   letter-spacing: .09em;
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .flex-inner li {
@@ -367,6 +466,27 @@ div {
   color: #fff;
 }
 
+.flex-row.newCampaign {
+  margin: 20px 0;
+  padding: 10px;
+  width: 160px;
+  background: #b46af885;
+  color: #000;
+  cursor: pointer;
+}
+
+.flex-row.newCampaign::before {
+  content: '\f26c';
+  /* You should use \ and not /*/
+  font-family: "Font Awesome 5 Free";
+  /* This is the correct font-family*/
+  font-style: normal;
+  font-weight: 600;
+  text-decoration: inherit;
+  margin-right: 10px;
+  color: #52019d;
+}
+
 .flex-table.header.flex-row.video-content.newVideo {
   padding: 10px;
   cursor: pointer;
@@ -385,8 +505,27 @@ div {
   color: #52019d;
 }
 
-.custLink {
-  line-height: 32px;
+.addCustomer {
+  padding: 10px;
+  cursor: pointer;
+  margin: 20px 0;
+  width: 200px;
+}
+
+.addCustomer::before {
+  content: '\f508';
+  /* You should use \ and not /*/
+  font-family: "Font Awesome 5 Free";
+  /* This is the correct font-family*/
+  font-style: normal;
+  font-weight: 600;
+  text-decoration: inherit;
+  margin-right: 10px;
+  color: #52019d;
+}
+
+.addCustomer:hover {
+  color: green;
 }
 
 .vLink {
@@ -406,13 +545,13 @@ div {
   color: #52019d;
 }
 
-.vEdit {
+.vEdit, .cEdit {
   color: #52019d;
   cursor: pointer;
   text-decoration: none;
 }
 
-.vEdit:before {
+.vEdit:before, .cEdit:before {
   content: '\f044';
   /* You should use \ and not /*/
   font-family: "Font Awesome 5 Free";
@@ -424,13 +563,13 @@ div {
   color: #52019d;
 }
 
-.vDelete {
+.vDelete, .cDelete {
   color: #610404;
   cursor: pointer;
   text-decoration: none;
 }
 
-.vDelete:before {
+.vDelete:before, .cDelete:before {
   content: '\f056';
   /* You should use \ and not /*/
   font-family: "Font Awesome 5 Free";

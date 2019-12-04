@@ -194,7 +194,143 @@ $( "#vLink").dialog({
         $('#vLink').dialog('option','title', vTitle).dialog('open');
     });
 
-});
 
 
+
+// =========== CUSTOMERS DASHBOARD LISTENERS AND FUNCTIONS ===================
+      
+    // Customer Edits  -------------------------------------------------
   
+    // customer Edit Dialog 
+    $( "#cEdit" ).dialog({
+        autoOpen: false,
+        modal: true,
+        width: 600,
+        height: 500,
+        buttons: {
+            "Save" : function() {
+                // capture and update values
+                customer_id = $('#cEdit').data('customer_id');
+                customer_contact_name = $('#customer_contact_name').val();
+                customer_contact_email = $('#customer_contact_email').val();
+                customer_contact_phone = $('#customer_contact_phone').val();
+                customer_website_url = $('#customer_website_url').val();
+                
+                $('.status').text('Saving...' + customer_contact_name );
+                
+                $.post( "jarvis.php", { 
+                            action: "updateCustomer",                       
+                            customer_id: customer_id,
+                            customer_website_url: customer_website_url,
+                            customer_contact_name: customer_contact_name,
+                            customer_contact_email: customer_contact_email,
+                            customer_contact_phone: customer_contact_phone
+                    
+                        }).done(function( data ) {                         
+                            console.log( 'affected rows: ' +  data );
+                        });
+                        
+                        
+                        // close dialog and reload
+                        $(this).dialog('close');   
+                        setTimeout( function(){ location.reload();  }, 100);
+                        
+                    },
+                    Cancel: function(){
+                        $(this).dialog('close');
+                    }
+                }
+            });
+
+            // Customer Edit Click Listener
+            // ================================
+
+            $('.cEdit').click(function(){
+
+               var customerId = $(this).data('customer-id');
+                // grab the variables from the existing displayed data
+                customer_name        = $(this).closest('.row').find('.customer_id').data('customer-name');
+                customer_contact_name = $(this).closest('.row').find('.customer_contact_name').text();
+                customer_contact_email = $(this).closest('.row').find('.customer_contact_email').text();
+                customer_contact_phone = $(this).closest('.row').find('.customer_contact_phone').text();
+                customer_website_url = $(this).closest('.row').find('.customer_website_url').text();
+
+                // populate form fields in HTML dialog with existing data
+                $('#cEdit #customer_contact_name').val( customer_contact_name );
+                $('#cEdit #customer_contact_email').val( customer_contact_email );
+                $('#cEdit #customer_contact_phone').val( customer_contact_phone );
+                $('#cEdit #customer_website_url').val( customer_website_url );
+
+                // open the dialog, passing our values as .data
+                $('#cEdit')
+                .data('customer_id', customerId)
+                .data('customer_name', customer_name)
+                .dialog('option','title','Edit ' + customer_name) .dialog('open');
+            });
+
+
+            // Add New Customer Dialog 
+
+            $( "#addCustomer").dialog({
+                autoOpen: false,
+                modal: true,
+                width: 550,
+                height: 550,
+                title: "Add A New Customer",
+                overlay: {
+                    opacity: 0.2,
+                    background: "black"
+                },
+                buttons: {
+            
+                    "Save": function(){          
+
+                        adminId = $('#addCustomer').data('adminId'); // get out set data
+                        customer_name = $('#addCustomer #customer_name').val();
+                        customer_contact_name = $('#addCustomer #customer_contact_name').val();
+                        customer_contact_email = $('#addCustomer #customer_contact_email').val();
+                        customer_contact_phone = $('#addCustomer #customer_contact_phone').val();
+                        customer_website_url = $('#addCustomer #customer_website_url').val();
+
+                        $.post( "jarvis.php", { 
+                            action: "insertCustomer",                       
+                            customer_name: customer_name,
+                            customer_contact_name: customer_contact_name,
+                            customer_contact_email: customer_contact_email,
+                            customer_contact_phone: customer_contact_phone,
+                            customer_website_url: customer_website_url,
+                            admin: adminId,
+                            status: 1
+                    
+                        }).done(function( data ) {                         
+                            console.log( 'Inserted : ' +  data );
+                        });
+                        
+                         // close dialog and reload
+                         $(this).dialog('close');   
+                         setTimeout( function(){ location.reload();  }, 100);
+
+                    },
+                    Cancel:function(){
+                        $(this).dialog('close');
+                    }
+                },
+                
+            });
+
+            // Customer Add Click Listener
+            $('.addCustomer').click(function(){
+                adminId = $(this).data('admin-id');
+                $('#addCustomer').data('admin-id', adminId).dialog('open');
+            });
+
+
+
+            // New Campaign Link Listener
+            $('.newCampaign').click(function(){
+                alert('Excellent! Let me help you with that.');
+            })
+
+
+
+});// document            

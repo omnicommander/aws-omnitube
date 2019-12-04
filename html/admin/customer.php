@@ -42,10 +42,8 @@ if( isset($_GET['id']) ){
 
 ?>
 
-<div class="adminSession"><?php  echo $admin->name. " Last On: ". $admin->lastOn . $menu->dashboard(); ?></div>
-    
+<div class="adminSession"><?php  echo $admin->name. " Last On: ". $admin->lastOn . $menu->dashboard(); ?></div> 
 <div class="container content">
-        
     <div class="table-container" role="table" aria-label="Customers">
         <div class="flex-table header" role="rowgroup">
             <div class="flex-row first" role="columnheader">Customer</div>
@@ -55,11 +53,21 @@ if( isset($_GET['id']) ){
             <div class="flex-row" role="columnheader">Create Date</div>
             <div class="flex-row" role="columnheader">Created By</div>
         </div>
-
         <div class="flex-table row" role="rowgroup">
             <?php foreach($customerArray[0] as $k => $v){ echo "<div class='flex-row' id=$k>$v</div>"; } ?>
         </div>
     </div>    
+
+    <?php
+    // NO CAMPAIGNS -- SHOW THE LINK
+        if( count($campaignArray) < 1  ){
+            echo '<div class="table-container" role="table">';
+            echo '<div class="flex-row newCampaign" data-customer-id="'.$cid.'">Add Campaign</div>';
+            echo '</div><!-- table-container-->';
+        }
+
+
+    ?>
 
     <!-- Campaigns of this customer  -->
 
@@ -162,10 +170,23 @@ if( isset($_GET['id']) ){
     </div>
 </div>
 
-<!-- FOOTER -->
-<footer class="footer">
-     &copy; Omnicommander <?php echo date('Y'); ?>
-</footer>
+<!-- New Campaign Dialog HTML -->
+<div id="newCampaign" hidden="hidden">
+    <div id="dataContainer">
+        <div class="inputContainer"><input type="hidden" id="customer_id"></div>
+        <div class="inputContainer">Pi Client Friendly<input type="text" id="campaign_name"> </div>
+        <div class="inputContainer"></div>
+    </div>
 
+</div>
+
+
+
+
+
+
+
+<!-- FOOTER -->
+<?php echo $admin->footer(); ?>
 </body>
 </html>

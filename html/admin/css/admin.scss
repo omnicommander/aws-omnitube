@@ -1,19 +1,7 @@
 @import url("https://use.fontawesome.com/releases/v5.8.1/css/all.css");
+@import 'colors';
 @import 'select';
-
-// colors
-$purple:#52019d;
-$faintGrey: #e8e8e8;
-$epicFail: rgb(141, 5, 5);
-$success: green;
-$notifyText: #313131;   
-$white: #fff;
-$campaignHeader: rgb(58, 54, 54);
-$campaignContent: #d5cdff;
-$videoHeader: silver;
-$youtubeIcon: red;
-$deleteLink: rgb(97, 4, 4);
-
+@import 'dashboard';
 
 /* admin css file */
 html{
@@ -25,6 +13,7 @@ body{
     display: flex;
     flex-direction: column;
     height: 98vh; /* Avoid the IE 10-11 `min-height` bug. */
+    margin: 4px;
 }
 
 .content {
@@ -137,7 +126,7 @@ li.home:before{
     }
     
 }
-
+// Page Header with a logo
 header{
     display: flex;
     justify-content: center;
@@ -145,7 +134,7 @@ header{
     font-size: 28px;
     // text-transform: uppercase;
     color: $purple;
-    margin:40px 0;
+    // margin:40px 0;
 }
 header:before{
     content: '\f505'; /* You should use \ and not /*/
@@ -258,6 +247,7 @@ header:before{
   text-transform: uppercase;
   letter-spacing: .09em;
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .flex-inner li {
@@ -332,6 +322,26 @@ div {
   }
 
 }
+
+// new campaign link
+.flex-row.newCampaign{
+    margin: 20px 0;
+    padding: 10px;
+    width: 160px;
+    background: #b46af885;
+    color: #000;
+    cursor: pointer;
+}
+.flex-row.newCampaign::before{
+  content: '\f26c'; /* You should use \ and not /*/
+    font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
+    font-style: normal;
+    font-weight: 600;
+    text-decoration: inherit;
+    margin-right: 10px;
+    color: $purple;  
+}
+
 // new video link row
 .flex-table.header.flex-row.video-content.newVideo{
     padding: 10px;
@@ -348,9 +358,25 @@ div {
     color: $purple;          
 }
 
-.custLink{
-  line-height: 32px;
+.addCustomer{
+  padding: 10px;
+  cursor: pointer;
+  margin: 20px 0;
+  width: 200px;
 }
+.addCustomer::before{
+  content: '\f508'; /* You should use \ and not /*/
+    font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
+    font-style: normal;
+    font-weight: 600;
+    text-decoration: inherit;
+    margin-right: 10px;
+    color: $purple;   
+}
+.addCustomer:hover{
+  color: $success;
+}
+
 
 // links for CRUD
 .vLink{
@@ -369,12 +395,12 @@ div {
 }
 
 
-.vEdit{ 
+.vEdit, .cEdit{ 
     color: $purple;
     cursor: pointer;
     text-decoration: none;
 }
-.vEdit:before{
+.vEdit:before, .cEdit:before{
     content: '\f044'; /* You should use \ and not /*/
     font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
     font-style: normal;
@@ -385,12 +411,12 @@ div {
           
 }
 
-.vDelete{
+.vDelete, .cDelete{
     color: $deleteLink;
     cursor: pointer;
     text-decoration: none;
 }
-.vDelete:before{
+.vDelete:before,.cDelete:before{
     content: '\f056'; /* You should use \ and not /*/
     font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
     font-style: normal;
