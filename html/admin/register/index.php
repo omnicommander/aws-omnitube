@@ -36,8 +36,10 @@ $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['la
         <?php echo $menu->dashboard(); ?>  
     </div>
 
-<div class="container">
-                
+<div class="container content">
+        
+    <header class="dashboard"><h2>Register New User</h2></header>
+
     <div class="form-container">
         <div id="notify"></div>
         <form id="registerForm" method="POST" action="createadmin.php" >
@@ -70,9 +72,13 @@ $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['la
         </form> 
 
     </div>  <!-- form-container -->
-</div><!-- container -->
 
-        <script src="../js/admin.js" async defer></script>
+    
+</div><!-- container -->
+<!-- FOOTER -->
+<?php echo $admin->footer(); ?>
+
+<script src="../js/admin.js" async defer></script>
 
     </body>
 </html>

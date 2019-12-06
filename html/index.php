@@ -7,6 +7,7 @@ session_start();
 include('lib/class_lib.php');
 $site = new Site();
 
+
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -26,9 +27,7 @@ $site = new Site();
     <body>
 <nav> 
     <ul class="menu">
-        <li class='admin'>
-                <a href="admin/">Login</a>
-        </li>
+        <li class='admin'><a href="admin/">Login</a></li>
     </ul>
 </nav>
 <div class="main-container content">
@@ -37,9 +36,9 @@ $site = new Site();
 
     <div id="img-container"><img src="img/Raspi-PGB001.png" alt="Raspberry Pi" ></div>
     
-    <h2>The Controller of Everything for OmniTube.</h2>
+    <h2>A Powerful and insightful CRM for OmniTube</h2>
     
-    <p>release v0.1a by Scott Fleming</p>
+    
 </div>
 
 <!-- Footer -->

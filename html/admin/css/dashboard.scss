@@ -6,7 +6,8 @@ header.dashboard{
     font-size: 28px;
     // text-transform: uppercase;
     color: $purple;
-    // margin:40px 0;
+    border:1px solid #ccc;
+    background: lightgray;
 }
 header.dashboard:before{
     content: '\f508'; /* You should use \ and not /*/
@@ -23,6 +24,10 @@ header.dashboard:before{
 section {
     display: table;
     width: 100%;
+    // box shadow
+    -webkit-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 4px 4px 5px 0px rgba(0,0,0,0.75);
   
     .headerRow{
         background-color: $purple;
@@ -44,5 +49,5 @@ section {
   
   section .col {
     display: table-cell;
-    padding: 10px 4px;
+    padding: 10px;
   }

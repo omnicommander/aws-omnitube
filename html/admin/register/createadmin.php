@@ -1,7 +1,13 @@
 <?php
 // New administrator or manager account
-require($_SERVER['DOCUMENT_ROOT'] . '/functions/db.php');
-require($_SERVER['DOCUMENT_ROOT'] . '/functions/admin.php');
+// OmniTube Service API 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+session_start();
+require('../lib/class_lib.php');
 
- extract($_POST);
-  addAdmin($adminName, $email, $pass, $role);
+$admin = new Admin();
+extract($_POST);
+
+ $admin->newAdmin($adminName, $email, $pass, $role);
+ exit;

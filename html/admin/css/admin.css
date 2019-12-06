@@ -56,6 +56,8 @@ header.dashboard {
           align-items: center;
   font-size: 28px;
   color: #52019d;
+  border: 1px solid #ccc;
+  background: lightgray;
 }
 
 header.dashboard:before {
@@ -74,6 +76,8 @@ header.dashboard:before {
 section {
   display: table;
   width: 100%;
+  -webkit-box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.75);
 }
 
 section .headerRow {
@@ -94,7 +98,41 @@ section > * {
 
 section .col {
   display: table-cell;
-  padding: 10px 4px;
+  padding: 10px;
+}
+
+.ui-widget .inputContainer {
+  margin: 10px 0;
+}
+
+.ui-widget input {
+  width: 400px !important;
+}
+
+.ui-widget-content label {
+  display: block;
+  margin: 2px 0;
+  color: purple;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+  background: #6c33a0;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+  background: #6c33a0;
+  color: rgba(255, 255, 255, 0.767);
+}
+
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
+  background: #bababa;
+}
+
+.ui-widget-overlay.custom-overlay {
+  background-color: black;
+  background-image: none;
+  opacity: 0.9;
+  z-index: 1040;
 }
 
 /* admin css file */
@@ -131,6 +169,11 @@ body {
   padding: 20px;
   background-color: #52019d;
   color: #fff;
+}
+
+a {
+  color: #52019d;
+  text-decoration: none;
 }
 
 input {
@@ -273,6 +316,10 @@ header:before {
   color: #e8e8e8;
 }
 
+.form-container {
+  margin: 40px;
+}
+
 .form-container #notify {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -280,8 +327,7 @@ header:before {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin-left: 60px;
-  margin-bottom: 20px;
+  height: 40px;
   color: #313131;
 }
 
@@ -354,16 +400,16 @@ header:before {
 .flex-outer > li > label,
 .flex-outer li p {
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 120px;
-          flex: 1 0 120px;
-  max-width: 220px;
+      -ms-flex: 1 0 300px;
+          flex: 1 0 300px;
+  max-width: 300px;
 }
 
 .flex-outer > li > label + *,
 .flex-inner {
   -webkit-box-flex: 1;
-      -ms-flex: 1 0 220px;
-          flex: 1 0 220px;
+      -ms-flex: 1 0 300px;
+          flex: 1 0 300px;
 }
 
 .flex-outer li p {
@@ -459,6 +505,14 @@ div {
   background: #d5cdff;
 }
 
+.flex-table .flex-row.campaign-content.PI_UID {
+  cursor: pointer;
+}
+
+.flex-table .flex-row.campaign-content.PI_UID:hover {
+  text-decoration: underline;
+}
+
 .flex-table .flex-row.campaignHead {
   background: #3a3636;
   text-transform: uppercase;
@@ -506,10 +560,12 @@ div {
 }
 
 .addCustomer {
-  padding: 10px;
-  cursor: pointer;
   margin: 20px 0;
-  width: 200px;
+  padding: 10px;
+  width: 160px;
+  background: #b46af885;
+  color: #000;
+  cursor: pointer;
 }
 
 .addCustomer::before {
@@ -605,14 +661,6 @@ div {
 #dataContainer .vTitle, #dataContainer .youtube_id {
   font-size: 14px;
   color: #52019d;
-}
-
-.ui-widget .inputContainer {
-  margin: 20px 0;
-}
-
-.ui-widget input {
-  width: 400px !important;
 }
 
 .main-container {

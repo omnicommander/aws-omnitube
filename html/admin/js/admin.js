@@ -1,7 +1,7 @@
 // admin.js file
 
 $(document).ready(function(){
-    $('#notify').hide();
+    // $('#notify').hide();
 
   if( getUrlParameter('id')){
       $('#notify').addClass('success').html('New admin account created successfully.').show();

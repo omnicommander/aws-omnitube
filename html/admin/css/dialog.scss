@@ -1,0 +1,42 @@
+// dialog styles
+
+.ui-widget .inputContainer{
+    margin: 10px 0;
+}
+
+// modal input styles
+.ui-widget input {
+    width: 400px !important;
+  }
+  
+
+.ui-widget-content label{
+    display: block;
+    margin: 2px 0;
+    color: purple;
+}
+
+// footer of dialog with save/cancel buttons
+.ui-dialog .ui-dialog-buttonpane{
+    background: #6c33a0;
+}
+
+// dialog title bar
+.ui-draggable .ui-dialog-titlebar{
+    background: #6c33a0;
+    color: rgba(255, 255, 255, 0.767);
+}
+
+// dialog background
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable{
+    background: #bababa;
+}
+
+// custom overlay styling
+.ui-widget-overlay.custom-overlay
+{
+    background-color: black;
+    background-image: none;
+    opacity: 0.9;
+    z-index: 1040;    
+}

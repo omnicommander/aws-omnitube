@@ -12,6 +12,7 @@ include('lib/class_lib.php');
 
 $videos     = new Video();
 $customer   = new Customer();
+$client     = new Client();
 
 // echo json_encode($_POST);
 if($_POST['action'] == 'updateVideo'){
@@ -32,4 +33,15 @@ echo json_encode( $customer->updateCustomer( $_POST ) );
 
 if($_POST['action'] == 'insertCustomer'){
 echo json_encode( $customer->insertCustomer( $_POST ) );
+}
+
+if( $_POST['action'] == "insertCampaign" ){
+    echo json_encode( $customer->insertCampaign( $_POST ) );
+}
+
+// client requests from Monitor
+// =============================
+
+if( $_POST['action'] == 'fetchClientMonitor' ){
+    echo json_encode( $client->monitor( $_POST ) );
 }

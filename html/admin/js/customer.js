@@ -1,5 +1,8 @@
 
 $(function () {
+
+    var my_duration = 100;
+
     // edit video Dialog Object and form update
     // ----------------------------------------
     $( "#vEdit").dialog({
@@ -7,6 +10,7 @@ $(function () {
         modal: true,
         width: 800,
         height: 300,
+        hide: { effect: "clip", duration: my_duration },
         title: "edit Video",
         buttons: {
             "Save" : function() {
@@ -66,6 +70,7 @@ $(function () {
         modal: true,
         width: 800,
         height: 300,
+        hide: { effect: "clip", duration: my_duration },
         title: "Add A New Youtube Video",
         buttons: {
 
@@ -117,6 +122,7 @@ $(function () {
         modal: true,
         width: 500,
         height: 250,
+        hide: { effect: "clip", duration: my_duration },
         title: "Delete A Video",
         buttons: {
 
@@ -169,6 +175,7 @@ $( "#vLink").dialog({
     modal: true,
     width: 750,
     height: 650,
+    hide: { effect: "clip", duration: my_duration },
     // title: "Watch",
     buttons: {
 
@@ -207,6 +214,7 @@ $( "#vLink").dialog({
         modal: true,
         width: 600,
         height: 500,
+        hide: { effect: "clip", duration: my_duration },
         buttons: {
             "Save" : function() {
                 // capture and update values
@@ -270,6 +278,7 @@ $( "#vLink").dialog({
 
 
             // Add New Customer Dialog 
+            // ================================
 
             $( "#addCustomer").dialog({
                 autoOpen: false,
@@ -277,10 +286,7 @@ $( "#vLink").dialog({
                 width: 550,
                 height: 550,
                 title: "Add A New Customer",
-                overlay: {
-                    opacity: 0.2,
-                    background: "black"
-                },
+                hide: { effect: "clip", duration: my_duration },
                 buttons: {
             
                     "Save": function(){          
@@ -324,13 +330,127 @@ $( "#vLink").dialog({
                 $('#addCustomer').data('admin-id', adminId).dialog('open');
             });
 
+    // New Campaign Dialog Form HTML 
+    // ============================
+    $( "#newCampaign").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 550,
+        height: 550,
+        title: "Add A New Pi Client",
+        overlay: {
+            opacity: 0.2,
+            background: "black"
+        },
+        buttons: {
+    
+            "Save": function(){          
+
+                // console.log( 'customer-id: ' +  $(this).data('customer_id') );
+                // console.log( 'admin-id: ' +  $(this).data('admin_id') );
+                console.log('client_id: ' + $('#newCampaign #client_id').val() );
+
+                // Variable passed through .data
+                $('#newCampaign #customer_id').val( $(this).data('customer_id') );
+                $('#newCampaign #admin_id').val( $(this).data('admin_id') );
+
+                $.post( "jarvis.php", { 
+                    action: "insertCampaign",                       
+                    customer_id: $(this).data('customer_id'),
+                    admin_id: $(this).data('admin_id'),
+                    campaign_name: $('#newCampaign #campaign_name').val(),
+                    client_id : $('#newCampaign #client_id').val(),
+                    status: 1
+        
+                }).done(function( data ) {                         
+                    console.log( 'Inserted : ' +  data );
+                });
+                
+                    // close dialog and reload
+                    $(this).dialog('close');   
+                    setTimeout( function(){ location.reload();  }, 100);
+
+            },
+            Cancel:function(){
+                $(this).dialog('close');
+            }
+        },
+        
+    });
 
 
-            // New Campaign Link Listener
-            $('.newCampaign').click(function(){
-                alert('Excellent! Let me help you with that.');
-            })
 
+    // New Campaign Link Listener
+    // ================================
+    $('.newCampaign').click(function(){
+        customer_id = $(this).data('customer_id');
+        admin_id= $(this).data('admin_id');
+
+        $('#newCampaign')
+        .data('customer_id', customer_id)
+        .data('admin_id', admin_id)
+        .dialog('open');
+    })
+
+
+    // PI_UID Link listener
+    // ==============================
+    $('.PI_UID').click(function(){
+       
+       var client_id = $(this).text();
+        console.log('clicked on ' + client_id);
+        $('#pistat')
+        .data('client_id', client_id)
+        .dialog('option','title', 'Stats for ' + client_id)
+        .dialog('open');
+
+    });
+
+    // PI_UID dialog Report HTML -- fortified with geo location.
+    // =========================
+
+    $( "#pistat").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 700,
+        height: 550,
+        hide: { effect: "clip", duration: my_duration },
+        open: function(){
+                      
+            $('.info').html('<h4>Request Log for ' + $('#pistat').data('client_id') + '</h4>');
+
+            // query jarvis for data on client_id
+            $.post( "jarvis.php", { 
+                action: "fetchClientMonitor",                       
+                client_id: $('#pistat').data('client_id')
+    
+            }).done(function( data ) {                         
+            
+                
+                data = $.parseJSON(data);            
+                
+                // console.log( data );
+                
+            $.each(data, function(i, item) {
+
+               var geo = $.parseJSON(item.geo);
+
+                $('.info').append(
+                    '<div>ip:' + item.ip_addr + 
+                    ' request:' + item.request + 
+                    ' date: ' + item.CallDate +
+                    ' geo: ' + geo.city + ', ' +geo.region +
+                    '</div>');
+                });
+            });
+        },
+
+        buttons: {
+            Close:function(){
+                    $(this).dialog('close');
+                }
+            }
+        });
 
 
 });// document            

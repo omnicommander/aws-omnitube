@@ -1,13 +1,1 @@
-section {
-  display: table;
-  width: 100%;
-}
-
-section > * {
-  display: table-row;
-}
-
-section .col {
-  display: table-cell;
-}
-/*# sourceMappingURL=dashboard.css.map */
+/* No CSS *//*# sourceMappingURL=dashboard.css.map */

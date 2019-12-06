@@ -3,7 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 // No unathorized access allowed
 session_start();
-if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
+if (!isset( $_SESSION['adminName']) || (!isset($_GET['id'])) ) { header('location:/admin/'); }
 // show a little class will ya?
 include('lib/class_lib.php');
 ?>
@@ -15,8 +15,8 @@ include('lib/class_lib.php');
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>TubeCommander v1</title>
-        <meta name="description" content="Omnicommander SaaS">
+        <title>TubeCommander Customer</title>
+        <meta name="description" content="TubeCommander SaaS">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/admin.css">
         <script src="https://kit.fontawesome.com/fd442e054f.js" crossorigin="anonymous"></script>
@@ -31,19 +31,18 @@ $campaigns  = new Campaign();
 $videos     = new Video();
 $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
 $menu       = new menu();
-
-if( isset($_GET['id']) ){
-    $cid=$_GET['id'];
-    $customer = $customers->fetchCustomer($cid);
-    $campaigns = $customers->fetchCustomerCampaigns($cid);
-    $customerArray = json_decode(json_encode($customer), true);
-    $campaignArray = json_decode( json_encode($campaigns), true);
-}
+$aid        = $admin->admin_id; 
+$cid        = $_GET['id'];
+$customer   = $customers->fetchCustomer($cid);
+$campaigns  = $customers->fetchCustomerCampaigns($cid);
+$customerArray = json_decode(json_encode($customer), true);
+$campaignArray = json_decode( json_encode($campaigns), true);
 
 ?>
 
 <div class="adminSession"><?php  echo $admin->name. " Last On: ". $admin->lastOn . $menu->dashboard(); ?></div> 
 <div class="container content">
+    <header class="dashboard"><h3>Customer Dashboard</h3></header>
     <div class="table-container" role="table" aria-label="Customers">
         <div class="flex-table header" role="rowgroup">
             <div class="flex-row first" role="columnheader">Customer</div>
@@ -54,20 +53,21 @@ if( isset($_GET['id']) ){
             <div class="flex-row" role="columnheader">Created By</div>
         </div>
         <div class="flex-table row" role="rowgroup">
-            <?php foreach($customerArray[0] as $k => $v){ echo "<div class='flex-row' id=$k>$v</div>"; } ?>
+            <?php foreach($customerArray[0] as $k => $v){ 
+            //  if customer_contact_email make it a link
+                switch($k){
+                    case 'customer_contact_email':
+                        echo "<div class='flex-row' id=$k><a href='mailto:$v'>$v</a></div>";         
+                    break;
+                     default:
+                     echo "<div class='flex-row' id=$k>$v</div>"; 
+
+                }
+                
+                
+                } ?>
         </div>
     </div>    
-
-    <?php
-    // NO CAMPAIGNS -- SHOW THE LINK
-        if( count($campaignArray) < 1  ){
-            echo '<div class="table-container" role="table">';
-            echo '<div class="flex-row newCampaign" data-customer-id="'.$cid.'">Add Campaign</div>';
-            echo '</div><!-- table-container-->';
-        }
-
-
-    ?>
 
     <!-- Campaigns of this customer  -->
 
@@ -77,6 +77,7 @@ if( isset($_GET['id']) ){
             
             <div class="flex-table header" role="rowgroup">
                 <div class="flex-row campaignHead" role="columnheader">Pi Client</div>
+                <div class="flex-row campaignHead" role="columnheader">Pi ID</div>
                 <div class="flex-row campaignHead" role="columnheader">Created</div>
                 <div class="flex-row campaignHead" role="columnheader">Managed By</div>
                 <div class="flex-row campaignHead" role="columnheader">Status</div>
@@ -89,10 +90,11 @@ if( isset($_GET['id']) ){
             echo "<div class='flex-table row campaign-table' role='rowgroup' data-campaign-id='$campaignId'>";
 
             foreach($campaign as $key => $val){
-                echo "<div class='flex-row campaign-content' id='$key'>$val</div>";
+                echo "<div class='flex-row campaign-content $key'>$val</div>";
             }
            
-            echo "</div>";
+            echo "</div><!-- campaign-table -->";
+
             // List videos in the campaign
             ?>
             <div class="flex-table header" role="rowgroup">
@@ -131,13 +133,20 @@ if( isset($_GET['id']) ){
         <?php    
        
     }
-
+        // Add Campaign LINK
+        echo '<div class="table-container" role="table">';
+        echo '<div class="flex-row newCampaign" data-admin_id="'.$aid.'" data-customer_id="'.$cid.'">Add Client</div>';
+        echo '</div><!-- table-container-->';
+    
     echo "</div>";
 ?>
-</div>
-
+</div><!-- container content -->
 
 <script src="js/customer.js"></script>
+
+
+<!-- DIALOGS BEGIN HERE MAKE --  NO EDITS BELOW THIS LINE!!! -->
+
 
 <!-- New Video Modal dialog HTML-->
 <div id="newVideo" title="Add New Video" hidden="hidden">
@@ -174,19 +183,25 @@ if( isset($_GET['id']) ){
 <div id="newCampaign" hidden="hidden">
     <div id="dataContainer">
         <div class="inputContainer"><input type="hidden" id="customer_id"></div>
-        <div class="inputContainer">Pi Client Friendly<input type="text" id="campaign_name"> </div>
-        <div class="inputContainer"></div>
+        <div class="inputContainer"><input type="hidden" id="admin_id"></div>
+        <div class="inputContainer">Pi Client Name (Friendly)<input type="text" id="campaign_name"> </div>
+        <div class="inputContainer"> Pi Client ID <input type="text" id="client_id"> </div>
     </div>
-
 </div>
 
-
-
-
+<!-- PI statistical Dialog HTML -->
+<div id="pistat" hidden="hidden">
+    <div id="dataContainer">
+        <div class='info'>
+        
+        </div>
+    </div>
+</div>
 
 
 
 <!-- FOOTER -->
 <?php echo $admin->footer(); ?>
+
 </body>
 </html>

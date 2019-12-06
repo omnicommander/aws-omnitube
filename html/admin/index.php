@@ -37,7 +37,7 @@ if ( isset( $_SESSION['adminName'] ) ) {
             <form method="POST" action="login.php" id="adminLoginForm" >
                 <ul class="flex-outer">
                 <li>                        
-                    <label for="email">Email address</label>
+                    <label for="email">Email address / Username</label>
                     <input type="mail"  placeholder="Email" name="email" id=email required>
                 </li>
                 <li>

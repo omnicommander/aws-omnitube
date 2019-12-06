@@ -2,6 +2,7 @@
 @import 'colors';
 @import 'select';
 @import 'dashboard';
+@import 'dialog';
 
 /* admin css file */
 html{
@@ -29,6 +30,7 @@ body{
     
   }
 
+  a{color: $purple; text-decoration: none;}
 
 input{
     padding: 4px;
@@ -149,11 +151,13 @@ header:before{
 
 // Form styles
 .form-container{
+    
+    margin: 40px;
+
     #notify{
        display:flex;
        justify-content: center; 
-       margin-left:60px;
-       margin-bottom:20px;
+       height: 40px;
        color: $notifyText;
        
     }
@@ -219,13 +223,13 @@ header:before{
 
 .flex-outer > li > label,
 .flex-outer li p {
-  flex: 1 0 120px;
-  max-width: 220px;
+  flex: 1 0 300px;
+  max-width: 300px;
 }
 
 .flex-outer > li > label + *,
 .flex-inner {
-  flex: 1 0 220px;
+  flex: 1 0 300px;
 }
 
 .flex-outer li p {
@@ -313,6 +317,14 @@ div {
   .flex-row.campaign-content{
     background: $campaignContent;
   }
+  
+//   PI_UID listener link
+  .flex-row.campaign-content.PI_UID {
+    cursor: pointer;
+}
+.flex-row.campaign-content.PI_UID:hover{
+    text-decoration: underline;
+}
 
   .flex-row.campaignHead{
     background:$campaignHeader;
@@ -359,10 +371,13 @@ div {
 }
 
 .addCustomer{
-  padding: 10px;
-  cursor: pointer;
-  margin: 20px 0;
-  width: 200px;
+    margin: 20px 0;
+    padding: 10px;
+    width: 160px;
+    background: #b46af885;
+    color: #000;
+    cursor: pointer;
+
 }
 .addCustomer::before{
   content: '\f508'; /* You should use \ and not /*/
@@ -452,14 +467,6 @@ div {
     }
 }
 
-.ui-widget .inputContainer{
-    margin: 20px 0;
-}
-
-// modal input styles
-.ui-widget input {
-    width: 400px !important;
-  }
   
 //   admin login container
   .main-container{
@@ -476,6 +483,8 @@ background: -moz-linear-gradient(left,  #8989ba 0%, #8989ba 100%); /* FF3.6-15 *
 background: -webkit-linear-gradient(left,  #8989ba 0%,#8989ba 100%); /* Chrome10-25,Safari5.1-6 */
 background: linear-gradient(to right,  #8989ba 0%,#8989ba 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8989ba', endColorstr='#8989ba',GradientType=1 ); /* IE6-9 */
+
+
   }
 
 // footer

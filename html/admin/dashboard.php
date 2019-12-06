@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 // No unathorized access allowed
 session_start();
-if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
+if (!isset( $_SESSION['adminName'] ) ) { header('location:/'); }
 
 include('lib/class_lib.php'); 
 
@@ -17,8 +17,8 @@ include('lib/class_lib.php');
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>OmniTube Service</title>
-        <meta name="description" content="The Service to the OmniTube Clients">
+        <title>TubeCommander Dashboard</title>
+        <meta name="description" content="The Service to OmniTube">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/admin.css">
         <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
@@ -34,7 +34,7 @@ $customers  = new Customer();
 $campaigns  = new Campaign();
 $videos     = new Video();
 $admin      = new Admin( $_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
-
+$client     = new Client();
 $menu       = new menu();
 
 ?>
@@ -50,7 +50,8 @@ $menu       = new menu();
 <div class="customerContainer">
     <section>
         <div class="headerRow">
-            <div class="col">Customer</div>
+            <div class="col">Customer Name</div>
+            <div class="col">Managed By</div>
             <div class="col">Last Update</div>
             <div class="col">Website</div>
             <div class="col">Contact</div>
@@ -61,8 +62,10 @@ $menu       = new menu();
     
         <?php
             foreach($customers->fetchAllCustomers($admin) as $cust){
+                
                 $cid    = $cust->customer_id;
                 $cName  = $cust->customer_name;
+                $clientCount = $client->fetchClientCount( $cid );
                 
                 // lose status for this version - @TODO: configure customer status
                 unset( $cust->customer_status );
@@ -74,7 +77,13 @@ $menu       = new menu();
                         case 'customer_name':
                         break;
                         case 'customer_id':
-                            echo "<div class='col $key' data-customer-name=\"$cName\" ><a href='customer.php?id=$value'>".strtoupper( $cName ) . "</a></div>";
+                            echo "<div class='col $key' data-customer-name=\"$cName\" ><a href='customer.php?id=$value'>".strtoupper( $cName ) . "</a> [". $clientCount->clientCount . "]</div>";
+                        break;
+                        case 'customer_contact_email':
+                            echo "<div class='col $key'><a href='mailto:$value'>$value</a></div>";
+                        break;
+                        case 'customer_website_url':
+                            echo "<div class='col $key'><a href='$value' target='_blank'>$value</a></div>";
                         break;
                         default:
                             echo "<div class='col $key' >$value</div>";
@@ -110,7 +119,7 @@ $menu       = new menu();
         <div class="inputContainer">Contact Name <input type="text" id="customer_contact_name"> </div>
         <div class="inputContainer">Contact Email <input type="text" id="customer_contact_email"> </div>
         <div class="inputContainer">Contact Phone <input type="text" id="customer_contact_phone"> </div>
-        <div class="inputContainer">Customer Website <input id="customer_website_url" type="text" ></div>
+        <div class="inputContainer">Website <input id="customer_website_url" type="text" ></div>
     </div>
 </div>
 
@@ -118,11 +127,26 @@ $menu       = new menu();
 <div id="addCustomer" title="Add New Customer" hidden="hidden">
     <div class="dataContainer">
         <input type="hidden" name="admin" id="admin">
-        <div class="inputContainer">Customer Name <input type="text" id="customer_name">  </div>
-        <div class="inputContainer">Contact Name <input type="text" id="customer_contact_name"> </div>
-        <div class="inputContainer">Contact Email <input type="text" id="customer_contact_email"> </div>
-        <div class="inputContainer">Contact Phone <input type="text" id="customer_contact_phone"> </div>
-        <div class="inputContainer">Customer Website <input id="customer_website_url" type="text" ></div>
+        <div class="inputContainer">
+            <label for="customer_name">Customer Name</label>
+            <input type="text" id="customer_name">  
+        </div>
+        <div class="inputContainer">
+            <label for="customer_contact_name">Contact Name</label> 
+            <input type="text" id="customer_contact_name"> 
+        </div>
+        <div class="inputContainer">
+            <label for="customer_contact_email">Contact Email</label>    
+            <input type="text" id="customer_contact_email"> 
+        </div>
+        <div class="inputContainer">
+            <label for="customer_contact_phone">Contact Phone</label>
+            <input type="text" id="customer_contact_phone"> 
+        </div>
+        <div class="inputContainer">
+            <label for="customer_website_url">Website</label> 
+            <input id="customer_website_url" type="text" >
+        </div>
     </div>
 </div>
 
