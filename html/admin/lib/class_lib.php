@@ -23,7 +23,7 @@ class Admin {
     //  ==============================
       function list( $admins=array()){
           global $mysqli;
-          $sql = "SELECT A.id ,A.adminName, A.email, DATE_FORMAT(A.last_logged,'%m/%d/%Y %H:%i') as last_logged, R.role, A.status FROM Admin A JOIN Roles R on R.id=A.role";
+          $sql = "SELECT A.id ,A.adminName, A.email, DATE_FORMAT(A.last_logged,'%m/%d/%Y %H:%i') as last_logged, A.role as role_id, R.role, A.status FROM Admin A JOIN Roles R on R.id=A.role";
           $result = $mysqli->query($sql);
           while($row = $result->fetch_object()){ array_push($admins, $row); }
 
@@ -51,7 +51,7 @@ class Admin {
             $_SESSION['role']           = $user->role;
             $_SESSION['last_logged']    = $user->last_logged;    
 
-            // update last_logged for Admin
+            // update last_logged for Admin and redirect to dashboard.
             $mysqli->query("Update Admin SET `last_logged` = NOW() WHERE id='" . $user->id ."'");
             header('location:/admin/dashboard.php');
 
@@ -478,7 +478,8 @@ class menu{
         global $admin; 
 
         //  default menu string
-         $this->menu = "<ul class='menu ".$admin->role ."'><li class='home'><a href='/'>Home</a></li>";
+        //  $this->menu = "<ul class='menu ".$admin->role ."'><li class='home'><a href='/'>Home</a></li>";
+         $this->menu = "<ul class='menu ".$admin->role ."'>";
         
          // admin exception
           $this->menu .= $admin->role == 'SuperAdmin' ? "<li class='dashboard'><a href='/admin/dashboard.php'>Customers</a></li>
@@ -493,9 +494,9 @@ class menu{
       function panel(){
           global $admin; 
 
-        $this->menu = "<ul class='menu ".$admin->role ."'><li class='home'><a href='/'>Home</a></li>";
+        $this->menu = "<ul class='menu ".$admin->role ."'>";
         $this->menu .= $this->role == 'SuperAdmin' ? "<li class='dashboard'><a href='/admin/dashboard.php'>Dashboard</a></li>
-        <li class='register'><a href='/admin/register'>New User</a></li>
+        <!-- <li class='register'><a href='/admin/register'>New User</a></li> -->
         <li class='logout'><a href='/admin/logout.php'>Logout</a></li></ul>" : "<li class='logout'><a href='/admin/logout.php'>Logout</a></li></ul>";
         
         return $this->menu;

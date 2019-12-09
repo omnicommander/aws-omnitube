@@ -571,7 +571,7 @@ div {
   color: #52019d;
 }
 
-.addCustomer {
+.addCustomer, .addAdmin {
   margin: 20px 0;
   padding: 10px;
   width: 160px;
@@ -580,9 +580,11 @@ div {
   cursor: pointer;
 }
 
-.addCustomer::before {
-  content: '\f508';
-  /* You should use \ and not /*/
+.addCustomer:hover, .addAdmin:hover {
+  color: green;
+}
+
+.addCustomer::before, .addAdmin:before {
   font-family: "Font Awesome 5 Free";
   /* This is the correct font-family*/
   font-style: normal;
@@ -592,8 +594,12 @@ div {
   color: #52019d;
 }
 
-.addCustomer:hover {
-  color: green;
+.addAdmin::before {
+  content: '\f807';
+}
+
+.addCustomer::before {
+  content: '\f508';
 }
 
 .vLink {

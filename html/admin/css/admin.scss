@@ -370,28 +370,37 @@ div {
     color: $purple;          
 }
 
-.addCustomer{
+.addCustomer, .addAdmin{
     margin: 20px 0;
     padding: 10px;
     width: 160px;
     background: #b46af885;
     color: #000;
     cursor: pointer;
-
 }
-.addCustomer::before{
-  content: '\f508'; /* You should use \ and not /*/
-    font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
-    font-style: normal;
-    font-weight: 600;
-    text-decoration: inherit;
-    margin-right: 10px;
-    color: $purple;   
-}
-.addCustomer:hover{
+.addCustomer:hover, .addAdmin:hover{
   color: $success;
 }
 
+
+
+.addCustomer::before, .addAdmin:before{
+  // content: '\f508'; /* You should use \ and not /*/
+  font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
+  font-style: normal;
+  font-weight: 600;
+  text-decoration: inherit;
+  margin-right: 10px;
+  color: $purple;   
+}
+
+.addAdmin::before{
+  content: '\f807';
+}
+
+.addCustomer::before{
+  content: '\f508';
+}
 
 // links for CRUD
 .vLink{
@@ -409,12 +418,12 @@ div {
     color: $purple; 
 }
 
-
 .vEdit, .cEdit{ 
     color: $purple;
     cursor: pointer;
     text-decoration: none;
 }
+
 .vEdit:before, .cEdit:before{
     content: '\f044'; /* You should use \ and not /*/
     font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/

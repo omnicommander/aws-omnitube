@@ -23,7 +23,7 @@ $menu       = new menu();
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>TubeCommander Adminstration Control Panel</title>
+        <title>Administrators & Managers</title>
         <meta name="description" content="TubeCommander SaaS">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/admin.css">
@@ -35,14 +35,13 @@ $menu       = new menu();
     <body>
     <div class="adminSession"><?php  echo $admin->name. " Last On: ". $admin->lastOn . $menu->panel(); ?></div> 
     <div class="container content">
-    <header class="dashboard"><h2>Administration Control Panel</h2></header>
+    <header class="dashboard"><h2>Admininstration</h2></header>
     <div class="panel">
         
     <section>
         <div class="headerRow">
             <div class="col">User</div>
             <div class="col">email</div>
-            <!-- <div class="col">lastOn</div> -->
             <div class="col">Role</div>
             <div class="col">Status</div>
             <div class="col">Action</div>
@@ -56,19 +55,31 @@ $menu       = new menu();
                 print "<div class='row'>";
                 foreach($adm as $k => $v){ 
                     switch($k){
+                        case "role":
+                        break;
+                        case "role_id":
+                            print "<div class='col role-id' data-role-id='$v'>".$adm->role."</div>";
+                        break;
                         case "status":
                             print $v == 0 ? "<div class='col $k' data-status=$v >Active</div>" : "<div class='col $k' data-status=$v>Inactive</div>";
                         break;
                         default:
-                        print "<div class='col $k'>$v </div> ";    
+                        print "<div class='col $k' >$v</div> ";    
                     }
                     
                 }
-                if($role !="SuperAdmin") print "<div class='col aEdit' data-admin-id='".$id. "'></div>";
+
+                // only SuperAdmins can edit. 
+                if($admin->role == "SuperAdmin") print "<div class='col aEdit' data-admin-id='".$id. "'></div>";
                 print "</div>";
             }
         ?>
         </section>
+
+        <div class="subMenuContainer"> 
+        <div data-admin-id="<?php print $admin->admin_id; ?>" class="addAdmin">New Role</div>
+    </div>
+
         </div>
 
 </div><!-- content --> 
@@ -98,9 +109,31 @@ $menu       = new menu();
        <div class="inputContainer">
          <input type="checkbox" id="status">
          <label class="checkbox">Disable this account</label>
-       
        </div>
     </div>
+</div>
+
+<!-- New Role dialog HTML  -->
+<div id="addRole" hidden="hidden">
+        <div class="dataContainer">
+            <input type="hidden" id="admin_id">
+            <div class="inputContainer">
+                <label for="adminName">Name</label>
+                <input type="text" id="adminName">
+            </div>
+            <div class="inputContainer">
+                <label for="email">Email</label>
+                <input type="text" id="email">
+            </div>
+            <div class="inputContainer">
+                <label for="pass">Password</label>
+                <input type="text" id="pass">
+            </div>
+            <div class="inputContainer">
+                <label for="role">Role</label>
+                <select id="role"></select>
+            </div>
+        </div>
 </div>
 
 </body>

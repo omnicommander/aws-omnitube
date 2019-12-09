@@ -2,6 +2,7 @@
 
 $(document).ready(function(){
     var my_duration = 100;
+    var selectValues = {"0":"SuperAdmin","1":"Admin", "2":"Manager"}; // TODO:make this a db call.
 
     // $('#notify').hide();
 
@@ -10,7 +11,7 @@ $(document).ready(function(){
   };
 
   if(getUrlParameter('login')){
-      $('#notify').addClass('error').html('Invalid email address OR password').show();
+      $('#notify').addClass('error').html('Sorry, those creds are foo bar. Please check it, and try again.').show();
   }
   
 
@@ -36,28 +37,27 @@ $('.panel .aEdit').click( function(){
     // clear options from duplicating
     $('#aEdit #role').children().remove().end();
     
-    selectValues = {"1":"Admin", "2":"Manager"}; // TODO:make this a db call.
-    admin_id    = $(this).data('admin-id');
-    admin_name  = $(this).closest('.row').find('.adminName').text();
-    admin_email = $(this).closest('.row').find('.email').text();
-    admin_role  = $(this).closest('.row').find('.role').text();
-    status      = $(this).closest('.row').find('.status').data('status');
-   
-    console.log('status onload = ' + status);
+    
+    admin_id     = $(this).data('admin-id');
+    admin_name   = $(this).closest('.row').find('.adminName').text();
+    admin_email  = $(this).closest('.row').find('.email').text();
+    admin_role   = $(this).closest('.row').find('.role-id').data('role-id');
+    status       = $(this).closest('.row').find('.status').data('status');
        
     // Populate fields in dialog
     $('#aEdit #admin_id').val(admin_id);
     $('#aEdit #adminName').val( admin_name );
     $('#aEdit #email').val( admin_email );
 
-    if(status == 1){
-        $('#aEdit #status').prop('checked', true); // set check if checked 
-    }
-   
-   
+    // check our checkbox, if its status is 1
+    if(status == 1 ) $('#aEdit #status').prop('checked', true);
+     
     // iterate selectValues, and match on admin_role, select option matched
+    // ====================================================================
     $.each(selectValues, function(key, value){
-        selectedOption = value === admin_role ? true : false;
+        // find our selected option key in selectValues array and set selected option
+        selectedOption = value === selectValues[admin_role] ? true : false;
+
         $('#aEdit #role').append($("<option></option") 
                         .attr('selected', selectedOption)
                         .attr("value", key)                    
@@ -102,11 +102,6 @@ $('.panel .aEdit').click( function(){
                if( $('#aEdit #status').is(':checked')){ 
                    status =1;
                }
-
-                               
-                
-                
-
                 // post it to jarvis... 
                 $.post( "jarvis.php", { 
                             action: "updateAdmin",                       
@@ -132,7 +127,41 @@ $('.panel .aEdit').click( function(){
             });
 
 
+            // Add Role listener
+            $('.addAdmin').click(function(){ 
+                admin_id = $(this).data('admin-id');
+                $('#addRole').data('admin_id', admin_id).dialog('open');
+            });
+    
+            // Add Role Dialog HTML
+            $('#addRole').dialog({
+                autoOpen: false,
+                modal: true,
+                open: function() {
+                    $('.ui-widget-overlay').addClass('custom-overlay');
+                    $.each(selectValues, function(key, value){
+                        $('#addRole #role').append($("<option></option") 
+                                        .attr("value", key)                    
+                                        .text(value)
+                        );
+                    });
 
+                },
+                title: 'New Role',
+                width: 500,
+                height: 600,
+                hide: { effect: "clip", duration: my_duration },
+                buttons:{
+                    "Save": function(){
+                            console.log( 'saving..' );
+                    },
+
+                    Cancel: function(){
+                        $(this).dialog('close');
+                    }
+                }
+
+            });
 
 
 
