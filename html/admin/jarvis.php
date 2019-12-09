@@ -1,7 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
+session_start();
 // ------------------------------------------
 // Jarvis -- The mind behind the service
 // Classy php like none other, hand crafted
@@ -9,7 +9,7 @@ error_reporting(E_ALL);
 // experience. -- sfleming
 // ------------------------------------------
 include('lib/class_lib.php');
-
+$admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
 $videos     = new Video();
 $customer   = new Customer();
 $client     = new Client();
@@ -44,4 +44,12 @@ if( $_POST['action'] == "insertCampaign" ){
 
 if( $_POST['action'] == 'fetchClientMonitor' ){
     echo json_encode( $client->monitor( $_POST ) );
+}
+
+
+// Admin requests for panel
+// ============================
+
+if( $_POST['action'] == 'updateAdmin' ){
+    echo json_encode( $admin->update( $_POST ) );
 }

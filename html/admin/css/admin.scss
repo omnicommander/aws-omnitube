@@ -494,3 +494,21 @@ footer{
     flex-direction: column;
     font-size: 12px;
 }
+
+// admin panel
+
+.panel{
+  margin: 20px 0;
+  .aEdit{cursor: pointer;}
+  
+  .col.aEdit:after{
+    content: '\f044'; /* You should use \ and not /*/
+    font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
+    font-style: normal;
+    font-weight: 600;
+    text-decoration: inherit;
+    margin-left: 5px;
+    color: $purple;
+  }
+
+}

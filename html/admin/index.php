@@ -1,11 +1,11 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
 session_start();
 if ( isset( $_SESSION['adminName'] ) ) {
    header('location:/admin/dashboard.php')  ;
 } 
+require 'lib/class_lib.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +20,9 @@ if ( isset( $_SESSION['adminName'] ) ) {
         <meta name="description" content="The Service to the OmniTube Clients">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="css/admin.css">
-        <script src="https://code.jquery.com/jquery-1.7.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.11.1/jquery-ui.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css" />
     </head>
     <body>
 
@@ -51,13 +53,7 @@ if ( isset( $_SESSION['adminName'] ) ) {
             </form> 
         </div>
 </div>  
-
-
-<footer class="footer">
-     &copy; Omnicommander <?php echo date('Y'); ?>
-</footer>
-
-     <script src="js/admin.js" async defer></script>
-
-    </body>
+  <script src="js/admin.js" async defer></script>
+  <?php print '<footer class="footer"> &copy; Omnicommander '. date('Y'). ' v0.1</footer>'; ?>
+ </body>
 </html>

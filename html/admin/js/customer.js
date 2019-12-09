@@ -8,6 +8,9 @@ $(function () {
     $( "#vEdit").dialog({
         autoOpen: false,
         modal: true,
+        open: function() {
+            $('.ui-widget-overlay').addClass('custom-overlay');
+        }, 
         width: 800,
         height: 300,
         hide: { effect: "clip", duration: my_duration },
@@ -68,6 +71,9 @@ $(function () {
     $( "#newVideo").dialog({
         autoOpen: false,
         modal: true,
+        open: function() {
+            $('.ui-widget-overlay').addClass('custom-overlay');
+        }, 
         width: 800,
         height: 300,
         hide: { effect: "clip", duration: my_duration },
@@ -120,6 +126,9 @@ $(function () {
     $( "#vDelete").dialog({
         autoOpen: false,
         modal: true,
+        open: function() {
+            $('.ui-widget-overlay').addClass('custom-overlay');
+        }, 
         width: 500,
         height: 250,
         hide: { effect: "clip", duration: my_duration },
@@ -173,6 +182,9 @@ $(function () {
 $( "#vLink").dialog({
     autoOpen: false,
     modal: true,
+    open: function() {
+        $('.ui-widget-overlay').addClass('custom-overlay');
+    }, 
     width: 750,
     height: 650,
     hide: { effect: "clip", duration: my_duration },
@@ -212,6 +224,9 @@ $( "#vLink").dialog({
     $( "#cEdit" ).dialog({
         autoOpen: false,
         modal: true,
+        open: function() {
+            $('.ui-widget-overlay').addClass('custom-overlay');
+        }, 
         width: 600,
         height: 500,
         hide: { effect: "clip", duration: my_duration },
@@ -283,6 +298,9 @@ $( "#vLink").dialog({
             $( "#addCustomer").dialog({
                 autoOpen: false,
                 modal: true,
+                open: function() {
+                    $('.ui-widget-overlay').addClass('custom-overlay');
+                }, 
                 width: 550,
                 height: 550,
                 title: "Add A New Customer",
@@ -407,7 +425,7 @@ $( "#vLink").dialog({
     });
 
     // PI_UID dialog Report HTML -- fortified with geo location.
-    // =========================
+    // ========================================================
 
     $( "#pistat").dialog({
         autoOpen: false,
@@ -417,7 +435,7 @@ $( "#vLink").dialog({
         hide: { effect: "clip", duration: my_duration },
         open: function(){
                       
-            $('.info').html('<h4>Request Log for ' + $('#pistat').data('client_id') + '</h4>');
+            $('.info').html('<h4>Request Log</h4>');
 
             // query jarvis for data on client_id
             $.post( "jarvis.php", { 
@@ -426,21 +444,27 @@ $( "#vLink").dialog({
     
             }).done(function( data ) {                         
             
-                
+                // mysqli query:
+                // "SELECT * from Monitor WHERE `client_id` IN ('$client_id')";
+
                 data = $.parseJSON(data);            
                 
-                // console.log( data );
+                if(data.length === 0) $('.info').html('<div>Thats a 404 on requests from '+ $('#pistat').data('client_id') + '</div>');
                 
             $.each(data, function(i, item) {
 
-               var geo = $.parseJSON(item.geo);
+                // dateformat request_date 
+                formatDate = new Date(item.request_date);
+                d          = formatDate.getDate();
+                m          = formatDate.getMonth();
+                m          += 1;
+                y          = formatDate.getFullYear();
+                y          = String(y).substr(2,4); // 2-digit year
+                hour       = formatDate.getHours();
+                min        = formatDate.getMinutes();
 
-                $('.info').append(
-                    '<div>ip:' + item.ip_addr + 
-                    ' request:' + item.request + 
-                    ' date: ' + item.CallDate +
-                    ' geo: ' + geo.city + ', ' +geo.region +
-                    '</div>');
+                   $('.info').append(
+                    '<div>'+ m +'/'+d+'/'+y+' '+hour+':'+min+ ':' + item.request + ' loc: ' + item.city + ','+ item.state + '</div>');
                 });
             });
         },

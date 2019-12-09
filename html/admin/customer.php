@@ -201,7 +201,7 @@ $campaignArray = json_decode( json_encode($campaigns), true);
 
 
 <!-- FOOTER -->
-<?php echo $admin->footer(); ?>
+<?php echo $menu->footer(); ?>
 
 </body>
 </html>

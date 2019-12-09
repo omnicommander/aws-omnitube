@@ -1,32 +1,29 @@
 <?php
 require($_SERVER['DOCUMENT_ROOT']. '/functions/db.php');
-require($_SERVER['DOCUMENT_ROOT'] .'/functions/admin.php');
 
 class Admin {
 
     public function __construct ($name, $role ) {
-        $this->name = $_SESSION['adminName'];
-        $this->lastOn = $_SESSION['last_logged'];
-        $this->admin_id = $_SESSION['admin_id'];
-        
-        global $mysqli;
-        $query="Select role from `Roles` where id=". $_SESSION['role'];
-        $result = $mysqli->query($query);
-        $value = mysqli_fetch_object($result);
-        $this->role = $value->role;
+        if( isset ($_SESSION['adminName'])){
+            $this->name = $_SESSION['adminName'];
+            $this->lastOn = $_SESSION['last_logged'];
+            $this->admin_id = $_SESSION['admin_id'];
+            
+            global $mysqli;
+            $query="Select role from `Roles` where id=". $_SESSION['role'];
+            $result = $mysqli->query($query);
+            $value = mysqli_fetch_object($result);
+            $this->role = $value->role;
+
+        }
 
       }
 
-      function footer(){
-          return '<footer class="footer"> &copy; Omnicommander '. date('Y'). ' v0.1</footer>';
-      }
-
-
-    //  List Admin accounts 
-    //  ======================
+    //  List Admin accounts
+    //  ==============================
       function list( $admins=array()){
           global $mysqli;
-          $sql = "SELECT A.id ,A.adminName, A.email, A.last_logged, R.role FROM Admin A JOIN Roles R on R.id=A.role";
+          $sql = "SELECT A.id ,A.adminName, A.email, DATE_FORMAT(A.last_logged,'%m/%d/%Y %H:%i') as last_logged, R.role, A.status FROM Admin A JOIN Roles R on R.id=A.role";
           $result = $mysqli->query($sql);
           while($row = $result->fetch_object()){ array_push($admins, $row); }
 
@@ -35,12 +32,13 @@ class Admin {
             
       }
 
-      // Admin login function
+    // Admin login function
+    // ===============================  
       function login($email, $pass){
     
         global $mysqli;
         $encoded = crypt($pass, '$2a$07$YourSaltIsA22ChrString$');
-        $stmt    = $mysqli->prepare("SELECT * FROM Admin WHERE email = ?");
+        $stmt    = $mysqli->prepare("SELECT * FROM Admin WHERE status='0' AND email = ?" );
         $stmt->bind_param('s', $email);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -55,8 +53,8 @@ class Admin {
 
             // update last_logged for Admin
             $mysqli->query("Update Admin SET `last_logged` = NOW() WHERE id='" . $user->id ."'");
-            
             header('location:/admin/dashboard.php');
+
         }else{
             header('location:/admin/index.php?login');
         }
@@ -75,6 +73,19 @@ class Admin {
            return "Error: " . $sql . "<br>" . $mysqli->error;
         }
     
+    }
+
+    // Update Admin account info
+    function update( $post_array ){
+        global $mysqli;
+        extract($post_array);
+
+        $sql = "UPDATE `Admin` SET `adminName`='$adminName',`email`='$email',`role`='$role',`status`= $status WHERE `id` = '$id'";
+
+        if(!$result = $mysqli->query($sql)){ $this->update = array('error' => 'update failed.'); }
+        $this->update = $mysqli->affected_rows;
+        $this->sql = $sql;
+        return $this->sql;
     }
 
 }
@@ -99,8 +110,8 @@ class Customer {
                        JOIN `Admin` A on A.id=C.admin       
                        WHERE C.status = 1 ";
 
-                       // Limit query to assigned manager only, if not Admin
-                       if( $admin->role != 'Admin' ) $query=$query. "AND C.admin= ".$_SESSION['admin_id'];
+                       // Limit query to assigned manager only, if not SuperAdmin
+                       if( $admin->role != 'SuperAdmin' ) $query=$query. "AND C.admin= ".$_SESSION['admin_id'];
 
         if(!$result = $mysqli->query($query)){
             $this->customers = array('error' => 'No result!');
@@ -150,6 +161,11 @@ class Customer {
 
         $this->campaigns = $data;
         return (object) $this->campaigns;
+    }
+
+    function ip_addrOfClien($client_id){
+        global $mysqli;
+        
     }
 
     function fetchCustomerCampaignVideos($campaignId, $data=array()){
@@ -230,11 +246,9 @@ function insertCustomer( $post_array ){
                 customer_contact_phone  = '$customer_contact_phone'
                 WHERE id = '$customer_id'";
 
-
-            if(!$result = $mysqli->query($sql)){
-                $this->update = array('error' => 'update failed.');
-            }
+            if(!$result = $mysqli->query($sql)){ $this->update = array('error' => 'update failed.'); }
             $this->update = $mysqli->affected_rows;
+            
             return $this->update;
         }
     
@@ -245,7 +259,7 @@ function insertCustomer( $post_array ){
 // Client class
 // ============================
 class Client{
-    var $clientCount, $monitor;
+    var $clientCount, $monitor, $videos;
 
     // Get count of clients for a customer
     // ====================================
@@ -262,38 +276,34 @@ class Client{
     }
 
 
-    // Return requests array called 
+    // Monitor function per client_id  
+    // @return 
+    // --------------------------------------------
+
     function monitor( $post_array , $data=array() ){
         global $mysqli;
         $client = new Client();
-
         extract( $post_array );
-
-        $sql = "SELECT * from Monitor WHERE `client_id` IN ('$client_id')";
         
+        $sql = "SELECT * from Monitor WHERE `client_id` IN ('$client_id') ORDER BY `request_date`";
+
         if( !$request = $mysqli->query($sql) ){
             $this->monitor = array('error' => 'Not Found', 'sql' => $sql);
             return $this->monitor;
         }
 
         while($row = $request->fetch_object()) { 
-              
-               $geo = $client->ipGeo( $row->ip_addr );
-
-               $row->geo = $geo;
             array_push( $data, $row); 
-        
         }
 
         $this->monitor = $data;
         return $this->monitor;
-
     }
 
     function ipGeo($ip){
 
-
         $url = "http://ipinfo.io/{$ip}/geo?token=dfa106283c3f98";
+
         $curl = curl_init();
         // Set some options - we are passing in a useragent too here
         curl_setopt_array($curl, [
@@ -306,10 +316,53 @@ class Client{
         // Close request to clear up some resources
 		curl_close($curl);
 
-        $this->ipGeo = $resp;
+        $this->ipGeo = json_decode($resp, true);
         return $this->ipGeo;
+    }
+
+    // --------------------------------------------------------------
+    // getVideos -- called by pi_callHome.php
+    // @var, @var
+    // @return array of videoId's for a clientId request
+    // $ipaddr is geoLocated and stored in Monitor table
+    //         for reporting puposes and backtrack of client activity
+    // --------------------------------------------------------------
+    function getVideos($clientId, $ipaddr, $videos=array() ){
+        global $mysqli;
+
+        $client = new Client();
+        
+        // geo object from ip_addr
+        $geo    = (object) json_decode( json_encode( $client->ipGeo($ipaddr) , true),true);
+        $coords = explode(',', $geo->loc);
+        $mysqli->query("INSERT INTO Monitor (`client_id`,`ip_addr`,`request`,`city`,`state`,`lat`,`lng`) 
+                        VALUES ('$clientId','$ipaddr','pi_getVideos','" . $geo->city."','".$geo->region."','".$coords[0]."','".$coords[1]."' )");
+    
+        $query = "SELECT V.* FROM `Client` C 
+                    JOIN Campaign CA on CA.campaign_id=C.campaign_id
+                    JOIN Video V on V.campaign_id=CA.campaign_id
+                    WHERE C.PI_UID='$clientId' AND CA.status=1";
+  
+        // failed query just return false
+        if(!$result = $mysqli->query($query)){ return false; }
+    
+        // successful query
+        while($row = $result->fetch_assoc()){ array_push( $videos, $row); }
+    
+        // no records?
+        if(mysqli_num_rows($result) === 0 ){
+        //   return array('status'=> 404, 'message' => "No results found for $customer");
+        return $query;
+        }else{
+            $this->videos = $videos;
+            return $this->videos;
+        }   
 
     }
+
+    
+        
+
 
 }
 
@@ -422,24 +475,36 @@ class menu{
     // ===========================
 
       function dashboard(){
+        global $admin; 
+
         //  default menu string
-         $this->menu = "<ul class='menu ".$this->role ."'><li class='home'><a href='/'>Home</a></li>";
+         $this->menu = "<ul class='menu ".$admin->role ."'><li class='home'><a href='/'>Home</a></li>";
         
          // admin exception
-          $this->menu .= $this->role == 'Admin' ? "<li class='dashboard'><a href='/admin/dashboard.php'>Customers</a></li>
+          $this->menu .= $admin->role == 'SuperAdmin' ? "<li class='dashboard'><a href='/admin/dashboard.php'>Customers</a></li>
           <li class='register'><a href='/admin/panel.php'>Admin</a></li>
           <li class='logout'><a href='/admin/logout.php'>Logout</a></li></ul>" : "<li class='logout'><a href='/admin/logout.php'>Logout</a></li></ul>";
           
           return $this->menu;
       }
 
-    //   admin panel menu
+    // Admin panel menu render
+    // =======================
       function panel(){
-        $this->menu = "<ul class='menu ".$this->role ."'><li class='home'><a href='/'>Home</a></li>";
-        $this->menu .= $this->role == 'Admin' ? "<li class='dashboard'><a href='/admin/dashboard.php'>Dashboard</a></li>
+          global $admin; 
+
+        $this->menu = "<ul class='menu ".$admin->role ."'><li class='home'><a href='/'>Home</a></li>";
+        $this->menu .= $this->role == 'SuperAdmin' ? "<li class='dashboard'><a href='/admin/dashboard.php'>Dashboard</a></li>
         <li class='register'><a href='/admin/register'>New User</a></li>
         <li class='logout'><a href='/admin/logout.php'>Logout</a></li></ul>" : "<li class='logout'><a href='/admin/logout.php'>Logout</a></li></ul>";
         
         return $this->menu;
       }
+
+    // Footer render
+    // ======================   
+       function footer(){
+        return '<footer class="footer"> &copy; Omnicommander '. date('Y'). ' v0.1</footer>';
+    }
+
 }

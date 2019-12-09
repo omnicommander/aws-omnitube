@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 // No unathorized access allowed
 session_start();
-if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/login.php'); }
+if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin/'); }
 include('../lib/class_lib.php');
 $menu = new menu();
 $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
@@ -62,7 +62,7 @@ $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['la
                     <label for="role">Role</label>
                     <select class="select-css" name="role" id="role" >
                     <option value="1">Admin</option>
-                    <option value="2">Campaign Manager</option>
+                    <option value="2" selected >Manager</option>
                     </select>
                 </li>
             <li>
@@ -76,7 +76,7 @@ $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['la
     
 </div><!-- container -->
 <!-- FOOTER -->
-<?php echo $admin->footer(); ?>
+<?php echo $menu->footer(); ?>
 
 <script src="../js/admin.js" async defer></script>
 

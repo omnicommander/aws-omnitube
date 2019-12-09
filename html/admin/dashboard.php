@@ -105,13 +105,10 @@ $menu       = new menu();
 
 
 </div><!-- customerContainer -->
-
 </div><!-- content -->
+<?php echo $menu->footer(); ?>
 
-<?php echo $admin->footer(); ?>
 
-
-<script src="js/customer.js"></script>
 
 <!-- Edit Customer dialog HTML-->
 <div id="cEdit" title="Edit Customer" hidden="hidden">
@@ -151,5 +148,6 @@ $menu       = new menu();
 </div>
 
 
+<script src="js/customer.js"></script>
 </body>
 </html>

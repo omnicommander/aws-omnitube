@@ -8,6 +8,17 @@
 .ui-widget input {
     width: 400px !important;
   }
+
+.ui-widget input[type='checkbox'] {
+    width: auto !important;
+}
+.ui-widget .inputContainer label.checkbox{
+    display: inline;
+    margin: 0; 
+    vertical-align: middle;
+    font-size: smaller;
+    color: $disable;
+}
   
 
 .ui-widget-content label{

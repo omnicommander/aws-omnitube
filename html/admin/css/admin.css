@@ -109,6 +109,18 @@ section .col {
   width: 400px !important;
 }
 
+.ui-widget input[type='checkbox'] {
+  width: auto !important;
+}
+
+.ui-widget .inputContainer label.checkbox {
+  display: inline;
+  margin: 0;
+  vertical-align: middle;
+  font-size: smaller;
+  color: #840000a6;
+}
+
 .ui-widget-content label {
   display: block;
   margin: 2px 0;
@@ -699,5 +711,25 @@ footer {
       -ms-flex-direction: column;
           flex-direction: column;
   font-size: 12px;
+}
+
+.panel {
+  margin: 20px 0;
+}
+
+.panel .aEdit {
+  cursor: pointer;
+}
+
+.panel .col.aEdit:after {
+  content: '\f044';
+  /* You should use \ and not /*/
+  font-family: "Font Awesome 5 Free";
+  /* This is the correct font-family*/
+  font-style: normal;
+  font-weight: 600;
+  text-decoration: inherit;
+  margin-left: 5px;
+  color: #52019d;
 }
 /*# sourceMappingURL=admin.css.map */

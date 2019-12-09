@@ -9,6 +9,11 @@ if (!isset( $_SESSION['adminName'] ) ) { header('location:/admin'); }
 include('lib/class_lib.php');
 $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
 $menu       = new menu();
+            if( $admin->role !='SuperAdmin' ){ 
+                echo 'You dont have permission, sorry.';
+                print_r($_SESSION);
+                exit;
+            }
 ?>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
@@ -31,27 +36,72 @@ $menu       = new menu();
     <div class="adminSession"><?php  echo $admin->name. " Last On: ". $admin->lastOn . $menu->panel(); ?></div> 
     <div class="container content">
     <header class="dashboard"><h2>Administration Control Panel</h2></header>
-    <div class="panel" style="border:1px solid purple;margin: 10px 0;padding:40px;">
-        <h4>Nothing to see here, move along while this section is being built.</h4> 
+    <div class="panel">
+        
+    <section>
+        <div class="headerRow">
+            <div class="col">User</div>
+            <div class="col">email</div>
+            <!-- <div class="col">lastOn</div> -->
+            <div class="col">Role</div>
+            <div class="col">Status</div>
+            <div class="col">Action</div>
+        </div>
         <?php
-        if( $admin->role !='Admin' ){ 
-            echo 'You dont have permission, sorry. Now kindly go away.';
-            print_r($_SESSION);
-            exit;
-        }
-
-        echo "<pre>";
-        print_r($admin->list());
-        echo "</pre>";
-
+       
+            // List admins in cols omitting id and hide SuperAdmin edits
+            foreach($admin->list() as $adm){
+                $id     = $adm->id; unset($adm->id,$adm->last_logged);
+                $role   = $adm->role;
+                print "<div class='row'>";
+                foreach($adm as $k => $v){ 
+                    switch($k){
+                        case "status":
+                            print $v == 0 ? "<div class='col $k' data-status=$v >Active</div>" : "<div class='col $k' data-status=$v>Inactive</div>";
+                        break;
+                        default:
+                        print "<div class='col $k'>$v </div> ";    
+                    }
+                    
+                }
+                if($role !="SuperAdmin") print "<div class='col aEdit' data-admin-id='".$id. "'></div>";
+                print "</div>";
+            }
         ?>
+        </section>
         </div>
 
 </div><!-- content --> 
 
 
 <!-- FOOTER -->
-<?php echo $admin->footer(); ?>
+<?php echo $menu->footer(); ?>
+<script src="js/admin.js"></script>
+
+
+<!-- Edit Admin dialog HTML-->
+<div id="aEdit"  hidden="hidden">
+    <div class="dataContainer">
+        <input type="hidden" id="admin_id">
+        <div class="inputContainer">
+            <label for="adminName">Name</label>
+            <input type="text" id="adminName">
+         </div>
+        <div class="inputContainer">
+            <label for="email">Email/Username</label>
+            <input type="text" id="email"> 
+        </div>
+        <div class="inputContainer">
+            <label for="role">Role</label>
+             <select id="role"><select>
+        </div>
+       <div class="inputContainer">
+         <input type="checkbox" id="status">
+         <label class="checkbox">Disable this account</label>
+       
+       </div>
+    </div>
+</div>
 
 </body>
 </html>

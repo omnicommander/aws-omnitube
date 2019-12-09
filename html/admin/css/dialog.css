@@ -1,6 +1,46 @@
+.ui-widget .inputContainer {
+  margin: 10px 0;
+}
+
+.ui-widget input {
+  width: 400px !important;
+}
+
+.ui-widget input[type='checkbox'] {
+  width: auto !important;
+}
+
+.ui-widget .inputContainer label.checkbox {
+  display: inline;
+  margin: 0;
+  vertical-align: middle;
+  font-size: smaller;
+  color: red;
+}
+
 .ui-widget-content label {
   display: block;
-  margin: 4px 0;
+  margin: 2px 0;
   color: purple;
+}
+
+.ui-dialog .ui-dialog-buttonpane {
+  background: #6c33a0;
+}
+
+.ui-draggable .ui-dialog-titlebar {
+  background: #6c33a0;
+  color: rgba(255, 255, 255, 0.767);
+}
+
+.ui-dialog.ui-widget.ui-widget-content.ui-corner-all.ui-front.ui-dialog-buttons.ui-draggable.ui-resizable {
+  background: #bababa;
+}
+
+.ui-widget-overlay.custom-overlay {
+  background-color: black;
+  background-image: none;
+  opacity: 0.9;
+  z-index: 1040;
 }
 /*# sourceMappingURL=dialog.css.map */
