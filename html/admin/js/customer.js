@@ -1,6 +1,9 @@
 
 $(function () {
 
+    // img.youtube.com/vi/[VideoID]/maxresdefault.jpg -- thumbnail for youtube_id
+    // -------------------------------------------------------------------------
+
     var my_duration = 100;
 
     // edit video Dialog Object and form update
@@ -18,11 +21,13 @@ $(function () {
         buttons: {
             "Save" : function() {
                 // capture and update values
-                video_title = $('input#video_title').val();
-                youtube_id   = $('input#youtube_id').val();
-                video_id     = $('#dataContainer').data('video-id');
-                customerId  = $('#dataContainer').data('customer-id');
-                campaignId  = $('#dataContainer').data('campaign-id');
+                video_title         = $('input#video_title').val();
+                youtube_id          = $('input#youtube_id').val();
+                youtube_formatted   = matchYoutubeUrl(youtube_id);
+                youtube_id          = youtube_formatted == false ? youtube_id : youtube_formatted;
+                video_id            = $('#dataContainer').data('video-id');            
+                customerId          = $('#dataContainer').data('customer-id');
+                campaignId          = $('#dataContainer').data('campaign-id');
 
                 $('#dataContainer').html('Saving...');
 
@@ -51,8 +56,8 @@ $(function () {
     // -------------------------------------------------
 
     $('.vEdit').click(function(){
-        vTitle     = $(this).closest('.flex-table').find('#video_title').text();
-        youtubeId  = $(this).closest('.flex-table').find('#youtube_id').text();
+        vTitle     = $(this).closest('.flex-table').find('#video_title').text().trim();
+        youtubeId  = $(this).closest('.flex-table').find('#youtube_id').text().trim();
         customerId = $(this).closest('.flex-table').data('customer-id');
         campaignId = $(this).closest('.flex-table').data('campaign-id');
         videoId    = $(this).closest('.flex-table').data('video-id');
@@ -83,8 +88,10 @@ $(function () {
             "Save" : function() {
 
                 // capture and update values of form
-                video_title  = $('#newVideo input#video_title').val();
-                youtube_id   = $('#newVideo input#youtube_id').val();
+                video_title  = $('#newVideo input#video_title').val().trim();
+                youtube_id   = $('#newVideo input#youtube_id').val().trim();
+                youtube_formatted = matchYoutubeUrl(youtube_id);
+                youtube_id = youtube_formatted == false ? youtube_id : youtube_formatted;
                 campaign_id  = $('#newVideo #dataContainer').data('campaign-id');            
                 
                 $('#dataContainer').html('Saving...');
@@ -199,8 +206,8 @@ $( "#vLink").dialog({
     }
 });
 
-    // videoLink click listener
-    // ------------------------------
+    // videoLink click listener preview modal
+    // --------------------------------------
 
     $('.vLink').click(function(){
         youtube_id  = $(this).closest('.flex-table').find('#youtube_id').text();
@@ -475,6 +482,15 @@ $( "#vLink").dialog({
                 }
             }
         });
+
+
+
+
+// Youtube url parse
+function matchYoutubeUrl(url){
+    var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+     return (url.match(p)) ? RegExp.$1 : false ;
+    }
 
 
 });// document            

@@ -125,7 +125,7 @@ $campaignArray = json_decode( json_encode($campaigns), true);
 
                 echo "</div><!-- flex-table header -->";
             }
-            
+            // link for additional video for this campaign
             echo "<div class='flex-table header flex-row video-content newVideo' data-campaign-id='$campaignId'>Add Video</div>";
             
         ?>
@@ -151,7 +151,7 @@ $campaignArray = json_decode( json_encode($campaigns), true);
 <!-- New Video Modal dialog HTML-->
 <div id="newVideo" title="Add New Video" hidden="hidden">
     <div class="inputContainer">Video Title <input id="video_title" type="text" required></div>
-    <div class="inputContainer">Youtube ID <input id="youtube_id" type="text" required></div>
+    <div class="inputContainer">Youtube URL<input id="youtube_id" type="text" required></div>
     <div id="dataContainer"></div>
 </div>
 
@@ -159,7 +159,7 @@ $campaignArray = json_decode( json_encode($campaigns), true);
 
 <div id="vEdit" title="" hidden="hidden" >   
     <div class="inputContainer">Video Title <input id="video_title" type="text" value=""></div>
-    <div class="inputContainer"> Youtube ID <input id="youtube_id" type="text" value=""> </div>  
+    <div class="inputContainer"> Youtube ID/URL <input id="youtube_id" type="text" value=""> </div>  
     <div id="dataContainer"></div>
 </div>
 

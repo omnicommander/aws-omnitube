@@ -1,6 +1,7 @@
 <?php
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
+
 $config = parse_ini_file('/var/www/private/config.ini'); 
 
 $mysqli = new mysqli($config['server'], $config['username'], $config['password'],$config['database']);
