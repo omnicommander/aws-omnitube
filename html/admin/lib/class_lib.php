@@ -163,11 +163,6 @@ class Customer {
         return (object) $this->campaigns;
     }
 
-    function ip_addrOfClien($client_id){
-        global $mysqli;
-        
-    }
-
     function fetchCustomerCampaignVideos($campaignId, $data=array()){
         global $mysqli;
 
@@ -264,7 +259,7 @@ class Client{
     // Get count of clients for a customer
     // ====================================
 
-    function fetchClientCount( $customer_id) {
+    function fetchClientCount( $customer_id ) {
         global $mysqli;
         $sql = "SELECT COUNT(*) as clientCount FROM Client WHERE customer_id IN('$customer_id')";
         if(!$result = $mysqli->query($sql)){
@@ -273,6 +268,17 @@ class Client{
         }
           $this->clientCount = mysqli_fetch_object($result);
           return $this->clientCount;       
+    }
+
+    function requestCount($client_id ){
+        global $mysqli;
+        $query = "SELECT COUNT(*) AS requestCount FROM Monitor WHERE client_id IN('$client_id')";
+        if(!$result = $mysqli->query($query)){
+            $this->requestCount = array('error' => 'no find! ', 'sql' => $sql );
+            return $this->requestCount;
+        }
+        $this->requestCount = mysqli_fetch_object($result);
+        return $this->requestCount;
     }
 
 
@@ -326,6 +332,22 @@ class Client{
     // @return array of videoId's for a clientId request
     // $ipaddr is geoLocated and stored in Monitor table
     //         for reporting puposes and backtrack of client activity
+    // @ret {
+    //     "video_id": "101",
+    //     "video_title": "Truck Month",
+    //     "campaign_id": "1",
+    //     "youtube_id": "Kaq7rNgB7fI",
+    //     "date_created": "2019-12-16 09:21:59",
+    //     "status": "1",
+    //     "customer_id": "1",
+    //     "campaign_name": "Scotts Pi At Home",
+    //     "admin_id": "1",
+    //     "created": "2019-12-18 12:55:14",
+    //     "client_overlay_text": "sample text",
+    //     "client_desktop_bg_file": "http://url-to-image-file.jpg",
+    //     "client_overlay_logo": "http://url-to-image-file.jpg"
+    //   }
+
     // --------------------------------------------------------------
     function getVideos($clientId, $ipaddr, $videos=array() ){
         global $mysqli;
@@ -338,7 +360,7 @@ class Client{
         $mysqli->query("INSERT INTO Monitor (`client_id`,`ip_addr`,`request`,`city`,`state`,`lat`,`lng`) 
                         VALUES ('$clientId','$ipaddr','pi_getVideos','" . $geo->city."','".$geo->region."','".$coords[0]."','".$coords[1]."' )");
     
-        $query = "SELECT V.* FROM `Client` C 
+        $query = "SELECT V.*, CA.* FROM `Client` C 
                     JOIN Campaign CA on CA.campaign_id=C.campaign_id
                     JOIN Video V on V.campaign_id=CA.campaign_id
                     WHERE C.PI_UID='$clientId' AND CA.status=1";
@@ -396,7 +418,7 @@ class Campaign{
 
 // Video Class
 class Video{
-    var $videos, $video;
+    var $videos, $video, $videoCount;
     
     function fetchCampaignVideos($campaignId){
         global $mysqli;
@@ -412,6 +434,15 @@ class Video{
         while($row = $result->fetch_object()){ array_push($data, $row);}
         $this->videos =(object) $data;
         return $this->videos;
+    }
+
+    function videoCount($campaignId){
+        global $mysqli;
+        $query  = "SELECT COUNT(*) as videoCount FROM Video WHERE campaign_id IN('$campaignId')";
+        $result = $mysqli->query($query);
+        $count  = mysqli_fetch_object($result);
+
+        return $count->videoCount;
     }
 
     // update a video entry

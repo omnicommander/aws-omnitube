@@ -17,6 +17,7 @@ $customer   = $client->getVideos($cId, $ipaddr);
 
 // output pure, and absolutely wonderful json
 header('Content-Type: application/json');
+
 echo json_encode($customer, true);
         
 // shut da door on your way out

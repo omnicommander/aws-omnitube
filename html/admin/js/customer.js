@@ -88,7 +88,7 @@ $(function () {
             "Save" : function() {
 
                 // capture and update values of form
-                video_title  = $('#newVideo input#video_title').val().trim();
+                video_title  = $('#newVideo input#video_title').val().trim().replace(/'/g, "`"); // escape the apostrphe
                 youtube_id   = $('#newVideo input#youtube_id').val().trim();
                 youtube_formatted = matchYoutubeUrl(youtube_id);
                 youtube_id = youtube_formatted == false ? youtube_id : youtube_formatted;
@@ -128,6 +128,8 @@ $(function () {
     });
 
 
+
+    // =======================================================
     // delete a video
     // ----------------------
     $( "#vDelete").dialog({
@@ -225,9 +227,8 @@ $( "#vLink").dialog({
 
 // =========== CUSTOMERS DASHBOARD LISTENERS AND FUNCTIONS ===================
       
-    // Customer Edits  -------------------------------------------------
-  
-    // customer Edit Dialog 
+     
+    // customer details Edit Dialog 
     $( "#cEdit" ).dialog({
         autoOpen: false,
         modal: true,
@@ -370,10 +371,6 @@ $( "#vLink").dialog({
         buttons: {
     
             "Save": function(){          
-
-                // console.log( 'customer-id: ' +  $(this).data('customer_id') );
-                // console.log( 'admin-id: ' +  $(this).data('admin_id') );
-                console.log('client_id: ' + $('#newCampaign #client_id').val() );
 
                 // Variable passed through .data
                 $('#newCampaign #customer_id').val( $(this).data('customer_id') );

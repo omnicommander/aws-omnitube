@@ -29,6 +29,7 @@ include('lib/class_lib.php');
 $customers  = new Customer(); 
 $campaigns  = new Campaign();
 $videos     = new Video();
+$client     = new Client();
 $admin      = new Admin($_SESSION['adminName'], $_SESSION['role'], $_SESSION['last_logged'] );
 $menu       = new menu();
 $aid        = $admin->admin_id; 
@@ -72,27 +73,40 @@ $campaignArray = json_decode( json_encode($campaigns), true);
     <!-- Campaigns of this customer  -->
 
     <div class="table-container" role="table" aria-label="Campaigns">
-        
-    <?php  foreach($campaignArray as $campaign){ ?>
-            
-            <div class="flex-table header" role="rowgroup">
+    <?php  foreach( $campaignArray as $campaign ){ ?>
+          <div class="flex-table header" role="rowgroup">
                 <div class="flex-row campaignHead" role="columnheader">Pi Client</div>
                 <div class="flex-row campaignHead" role="columnheader">Pi ID</div>
                 <div class="flex-row campaignHead" role="columnheader">Created</div>
                 <div class="flex-row campaignHead" role="columnheader">Managed By</div>
                 <div class="flex-row campaignHead" role="columnheader">Status</div>
+                <div class="flex-row campaignHead" role="columnheader">Requests</div>
             </div>
 
     <?php
                         
             // grab campaignId and remove from array
-            $campaignId=array_shift($campaign);
+            $campaignId = array_shift( $campaign );
+            
             echo "<div class='flex-table row campaign-table' role='rowgroup' data-campaign-id='$campaignId'>";
-
+            
+            $videoCount = $videos->videoCount( $campaignId );
+            
             foreach($campaign as $key => $val){
-                echo "<div class='flex-row campaign-content $key'>$val</div>";
+                switch($key){
+                    case "campaign_name":
+                        echo "<div class='flex-row campaign-content $key'>$val ( $videoCount ) </div>";
+                    break;
+                    case "PI_UID":
+                        $c = $client->requestCount( $val );
+                        echo "<div class='flex-row campaign-content $key'>$val</div>";
+                    break;
+                    default:
+                    echo "<div class='flex-row campaign-content $key'>$val</div>";
+                }
             }
-           
+            echo "<div class='flex-row campaign-content'>".$c->requestCount ."</div>";
+
             echo "</div><!-- campaign-table -->";
 
             // List videos in the campaign
@@ -105,15 +119,15 @@ $campaignArray = json_decode( json_encode($campaigns), true);
         </div>
         <?php
 
-            $videos = json_decode(json_encode($customers->fetchCustomerCampaignVideos($campaignId)), true);
+            $videosArr = json_decode(json_encode($customers->fetchCustomerCampaignVideos($campaignId)), true);
                         
-            foreach($videos as $video){
+            foreach($videosArr as $videoGroup){
                 
-                $videoId = array_shift($video);
+                $videoId = array_shift($videoGroup);
                 
                 echo "<div class='flex-table header ' data-video-id='$videoId' data-campaign-id='$campaignId' data-customer-id='$cid' role='rowgroup'>";
                 
-                    foreach($video as $vKey => $vVal){
+                    foreach($videoGroup as $vKey => $vVal){
                         echo "<div class='flex-row video-content' id='$vKey'>$vVal";
                         echo $vKey == 'youtube_id' ? " <span data-youtube-id='$vVal' class='vLink'></class>": "";
                         echo "</div>";
