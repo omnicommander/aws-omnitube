@@ -147,6 +147,22 @@ $menu       = new menu();
     </div>
 </div>
 
+<!-- Delete Customer Dialog  -->
+<div id="deleteCustomer" title="Delete A Customer" hidden="hidden">
+   <div class='caution'>Caution! There is no Un-do here!</div>
+   <div class="dataContainer">
+       <div class="confirmDelete-warning">You will delete this customer information, as well as all the associated customer's data. Once it's gone, there's no return. The big eraser.</div>
+    <div class="confirmDelete-container">
+        <div class="customer_name"></div>
+        <div class="customer_contact_name"></div>
+        <div class="customer_contact_email"></div>
+        <div class="customer_contact_phone"></div>
+        <div class="customer_website_url"></div>
+    </div>
+   </div>
+
+</div>
+
 
 <script src="js/customer.js"></script>
 </body>

@@ -247,6 +247,33 @@ function insertCustomer( $post_array ){
             return $this->update;
         }
     
+    // DELETE A CUSTOMER --
+    // Deletes foriegn key tables as well. 
+    // =====================================
+    function deleteCustomer( $post_array ){
+        global $mysqli;
+
+        
+
+        extract( $post_array );
+
+        $delete = "DELETE Customer, Campaign, Client, Video 
+                   FROM Customer
+	               LEFT JOIN Campaign on Campaign.customer_id=Customer.id
+                   LEFT JOIN Client on Client.customer_id=Customer.id
+                   LEFT JOIN Video on Video.campaign_id=Campaign.campaign_id
+                   WHERE Customer.id IN ( $customer_id )";
+        if(! $rows = $mysqli->query($delete)){
+            $this->delete = array( 'error' => 'delete failed');
+        }
+        $this->delete = $mysqli->affected_rows;
+        return $this->delete;
+
+
+    }
+
+
+
 } // Customer class ends here.
 
 

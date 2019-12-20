@@ -299,6 +299,74 @@ $( "#vLink").dialog({
                 .dialog('option','title','Edit ' + customer_name) .dialog('open');
             });
 
+            // Delete A Customer link listener
+            // ===============================
+            $('.cDelete').click(function(){
+
+                 var customer_id = $(this).data('customer-id');
+                 customer_name = $(this).closest('.row').find('.customer_id').data('customer-name');
+                
+                // grab the variables from the existing displayed data
+
+               $('#deleteCustomer .customer_name').text( customer_name );
+               $('#deleteCustomer .customer_contact_name').text( $(this).closest('.row').find('.customer_contact_name').text()) ;
+               $('#deleteCustomer .customer_contact_email').text( $(this).closest('.row').find('.customer_contact_email').text());
+               $('#deleteCustomer .customer_contact_phone').text( $(this).closest('.row').find('.customer_contact_phone').text() );
+               $('#deleteCustomer .customer_website_url').text( $(this).closest('.row').find('.customer_website_url').text() );
+
+               $('#deleteCustomer').data('customer_id', customer_id).dialog('option', 'title', 'Delete ' + customer_name ).dialog('open');
+            });
+
+            // Delete customer dialog HTML
+
+            $('#deleteCustomer').dialog({
+                autoOpen: false,
+                modal: true,
+                open: function() {
+                    $('.ui-widget-overlay').addClass('custom-overlay');
+                }, 
+                width: 600,
+                height: 500,
+                hide: { effect: "clip", duration: my_duration },
+                buttons: { 
+                     
+                    "Delete" : function(){
+                        customer_id = $('#deleteCustomer').data('customer_id');
+
+                        $.post( "jarvis.php", { 
+                            action: "deleteCustomer",                       
+                            customer_id: customer_id
+                            
+                        }).done(function( data ) {                         
+                            console.log( 'affected rows: ' +  data );
+                        });
+                        
+                        // close dialog and reload
+                        $(this).dialog('close');   
+                        setTimeout( function(){ location.reload();  }, 100);
+                    },
+
+                        cancel: function(){
+                            $(this).dialog('close');
+                        }
+                }
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             // Add New Customer Dialog 
             // ================================

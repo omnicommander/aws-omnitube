@@ -140,6 +140,26 @@ section .col {
   background: #bababa;
 }
 
+.ui-dialog .confirmDelete-warning {
+  text-transform: uppercase;
+}
+
+.ui-dialog .confirmDelete-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  background: #820202a8;
+  padding: 10px;
+  line-height: 30px;
+  color: #faff00d9;
+  border: 7px solid orange;
+  margin: 10px 0;
+}
+
 .ui-widget-overlay.custom-overlay {
   background-color: black;
   background-image: none;

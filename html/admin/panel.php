@@ -41,7 +41,7 @@ $menu       = new menu();
     <section>
         <div class="headerRow">
             <div class="col">User</div>
-            <div class="col">email</div>
+            <div class="col">email/username</div>
             <div class="col">Role</div>
             <div class="col">Status</div>
             <div class="col">Action</div>
@@ -77,7 +77,7 @@ $menu       = new menu();
         </section>
 
         <div class="subMenuContainer"> 
-        <div data-admin-id="<?php print $admin->admin_id; ?>" class="addAdmin">New Role</div>
+        <div data-admin-id="<?php print $admin->admin_id; ?>" class="addAdmin">Add New</div>
     </div>
 
         </div>
@@ -122,7 +122,7 @@ $menu       = new menu();
                 <input type="text" id="adminName">
             </div>
             <div class="inputContainer">
-                <label for="email">Email</label>
+                <label for="email">Email/Username</label>
                 <input type="text" id="email">
             </div>
             <div class="inputContainer">

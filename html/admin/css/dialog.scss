@@ -43,6 +43,26 @@
     background: #bababa;
 }
 
+.ui-dialog .confirmDelete-warning{
+    font-size: 18px;
+    text-transform: uppercase;
+    margin: 6px;
+    line-height: 24px;
+}
+
+.ui-dialog .confirmDelete-container{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    flex-direction: column;
+    background: #820202a8;
+    padding: 10px;
+    line-height: 30px;
+    color: #faff00d9;
+    border: 7px solid orange;
+    margin: 10px 0;
+}
+
 // custom overlay styling
 .ui-widget-overlay.custom-overlay
 {

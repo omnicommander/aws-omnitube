@@ -35,6 +35,10 @@ if($_POST['action'] == 'insertCustomer'){
 echo json_encode( $customer->insertCustomer( $_POST ) );
 }
 
+if($_POST['action'] == 'deleteCustomer'){
+    echo json_encode( $customer->deleteCustomer( $_POST ));
+}
+
 if( $_POST['action'] == "insertCampaign" ){
     echo json_encode( $customer->insertCampaign( $_POST ) );
 }
